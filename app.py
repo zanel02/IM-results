@@ -1,3 +1,4 @@
+import json
 import sqlite3
 from pathlib import Path
 
@@ -72,6 +73,23 @@ def load_athlete_results(athlete_name: str) -> pd.DataFrame:
         get_conn(),
         params=(athlete_name,),
     )
+
+
+@st.cache_data
+def load_weather_data(race_id: int) -> dict | None:
+    """Return stored race_weather row with hourly list, or None if not available."""
+    try:
+        conn = get_conn()
+        row = conn.execute(
+            "SELECT * FROM race_weather WHERE race_id = ?", (race_id,)
+        ).fetchone()
+    except Exception:
+        return None
+    if row is None:
+        return None
+    d = dict(row)
+    d["hourly"] = json.loads(d["hourly_json"])
+    return d
 
 
 @st.cache_data
@@ -187,6 +205,33 @@ with tab1:
     c3.metric("DNS", n_dns)
     c4.metric("DQ", n_dq)
     c5.metric("Median Finish", fmt_time(finishers_single["finish_secs"].median()))
+
+    # ── weather ───────────────────────────────────────────────────────────────
+
+    weather = load_weather_data(int(race["id"]))
+    with st.expander("Race Day Weather", expanded=False):
+        if weather is None:
+            st.info("Weather not available — run `python3 fetch.py <group-uuid>` to load it.")
+        else:
+            tz_label = weather.get("timezone", "")
+            wcols = st.columns(4)
+            wcols[0].metric("Temp at 7am", f"{weather['temp_f_7am']:.0f}°F" if weather["temp_f_7am"] else "—")
+            wcols[1].metric("High (6am–6pm)", f"{weather['temp_f_high']:.0f}°F" if weather["temp_f_high"] else "—")
+            wcols[2].metric("Total Precip", f"{weather['total_precip_in']:.2f} in" if weather["total_precip_in"] is not None else "—")
+            wcols[3].metric("Avg Wind", f"{weather['avg_wind_mph']:.0f} mph" if weather["avg_wind_mph"] else "—")
+
+            hourly_df = pd.DataFrame(weather["hourly"]).rename(columns={
+                "hour": "Hour",
+                "temp_f": "Temp (°F)",
+                "humidity": "Humidity (%)",
+                "wind_mph": "Wind (mph)",
+                "wind_dir": "Dir",
+                "precip_in": "Precip (in)",
+                "conditions": "Conditions",
+            })
+            if tz_label:
+                st.caption(f"All times in {tz_label}")
+            st.dataframe(hourly_df, use_container_width=True, hide_index=True)
 
     st.divider()
 
@@ -334,6 +379,10 @@ with tab2:
         n_fin = len(yr_fin)
         n_dnf = int((yr_all["status"] == "DNF").sum())
         dnf_pct = f"{100 * n_dnf / len(yr_all):.1f}%" if len(yr_all) else "—"
+
+        race_row = series_races[series_races["year"] == year]
+        w = load_weather_data(int(race_row["id"].iloc[0])) if not race_row.empty else None
+
         rows.append({
             "Year":                        year,
             "Finishers":                   n_fin,
@@ -343,6 +392,8 @@ with tab2:
             f"{pct_label} Swim":           fmt_time(yr_fin["swim_secs"].quantile(pct)),
             f"{pct_label} Bike":           fmt_time(yr_fin["bike_secs"].quantile(pct)),
             f"{pct_label} Run":            fmt_time(yr_fin["run_secs"].quantile(pct)),
+            "Temp 7am (°F)":               f"{w['temp_f_7am']:.0f}°" if w and w.get("temp_f_7am") else "—",
+            "Precip (in)":                 f"{w['total_precip_in']:.2f}" if w and w.get("total_precip_in") is not None else "—",
         })
 
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)

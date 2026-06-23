@@ -108,6 +108,20 @@ def init_db() -> None:
                 total_dist_km        REAL
             );
 
+            CREATE TABLE IF NOT EXISTS race_weather (
+                id              INTEGER PRIMARY KEY,
+                race_id         INTEGER UNIQUE NOT NULL REFERENCES races(id),
+                fetched_at      TEXT NOT NULL,
+                venue_lat       REAL NOT NULL,
+                venue_lon       REAL NOT NULL,
+                timezone        TEXT,
+                hourly_json     TEXT NOT NULL,
+                temp_f_7am      REAL,
+                temp_f_high     REAL,
+                total_precip_in REAL,
+                avg_wind_mph    REAL
+            );
+
             CREATE INDEX IF NOT EXISTS idx_results_race     ON results(race_id);
             CREATE INDEX IF NOT EXISTS idx_results_athlete  ON results(athlete_name);
             CREATE INDEX IF NOT EXISTS idx_results_status   ON results(status);
@@ -264,10 +278,12 @@ def list_races() -> list[dict]:
     with get_connection() as conn:
         rows = conn.execute(
             """
-            SELECT wtc_eventid, event_name, year, distance_type,
-                   results_fetched_at IS NOT NULL AS fetched
-            FROM races
-            ORDER BY year DESC, distance_type, event_name
+            SELECT r.id, r.wtc_eventid, r.event_name, r.event_date, r.year, r.distance_type,
+                   eg.group_uuid,
+                   r.results_fetched_at IS NOT NULL AS fetched
+            FROM races r
+            LEFT JOIN event_groups eg ON r.group_id = eg.id
+            ORDER BY r.year DESC, r.distance_type, r.event_name
             """
         ).fetchall()
     return [dict(r) for r in rows]

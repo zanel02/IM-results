@@ -8,14 +8,16 @@ Given a group UUID (from the labs-v2.competitor.com/results/event/<UUID> URL),
 this script:
   1. Downloads the group page and registers all sub-events (race years)
   2. Fetches and stores results for every sub-event that hasn't been ingested yet
-  3. Skips sub-events that are already stored (fully idempotent)
+  3. Fetches race-day weather for every sub-event with results but no weather yet
+  4. Skips anything already stored (fully idempotent)
 """
 
 import json
 import sys
 import time
 import urllib.request
-from storage import init_db, register_event_group, save_results, is_race_fetched, list_races
+from storage import init_db, register_event_group, save_results, list_races
+from weather import fetch_and_save_weather, is_weather_fetched
 
 BASE = "https://labs-v2.competitor.com"
 HEADERS = {"User-Agent": "Mozilla/5.0"}
@@ -37,22 +39,38 @@ def fetch_group(group_uuid: str) -> None:
 
     # 2. Find sub-events that still need results
     all_races = list_races()
-    pending = [r for r in all_races if not r["fetched"]]
+    group_races = [r for r in all_races if r.get("group_uuid") == group_uuid]
+    pending = [r for r in group_races if not r["fetched"]]
 
     if not pending:
         print("  All sub-events already ingested.")
-        return
+    else:
+        # 3. Fetch results for each pending sub-event
+        for race in pending:
+            wtc_id = race["wtc_eventid"]
+            name = race["event_name"] or wtc_id
+            print(f"  Fetching results for {name}...")
+            url = f"{BASE}/api/results?wtc_eventid={wtc_id}"
+            data = json.loads(fetch(url))
+            count = save_results(wtc_id, data)
+            print(f"  Saved {count} results.")
+            time.sleep(0.5)
 
-    # 3. Fetch results for each pending sub-event
-    for race in pending:
-        wtc_id = race["wtc_eventid"]
-        name = race["event_name"] or wtc_id
-        print(f"  Fetching results for {name}...")
-        url = f"{BASE}/api/results?wtc_eventid={wtc_id}"
-        data = json.loads(fetch(url))
-        count = save_results(wtc_id, data)
-        print(f"  Saved {count} results.")
-        time.sleep(0.5)  # be polite
+    # 4. Fetch weather for all group races with results but no weather yet
+    # Re-query so newly-fetched races show fetched=True
+    all_races = list_races()
+    group_races = [r for r in all_races if r.get("group_uuid") == group_uuid]
+    needs_weather = [r for r in group_races if r["fetched"] and not is_weather_fetched(r["id"])]
+
+    if not needs_weather:
+        print("  Weather up to date for all sub-events.")
+    else:
+        for race in needs_weather:
+            try:
+                fetch_and_save_weather(race["id"], race["event_name"], race["event_date"])
+            except Exception as exc:
+                print(f"  Warning: weather fetch failed for {race['event_name']} — {exc}")
+            time.sleep(1.0)
 
 
 if __name__ == "__main__":

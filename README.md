@@ -6,8 +6,9 @@ Historical Ironman triathlon results dashboard. Scrapes data from the WTC/Compet
 
 ```bash
 pip install streamlit pandas numpy
-python3 storage.py init
 ```
+
+The database (`data/ironman.db`) is committed to this repo — no initial fetch needed.
 
 ## Running the dashboard
 
@@ -15,41 +16,27 @@ python3 storage.py init
 streamlit run app.py
 ```
 
-Opens at `http://localhost:8501`. Two tabs:
+Opens at `http://localhost:8501`. Three tabs:
 
-- **Race Results** — browse finisher tables and time distributions for a single race/year/age group
-- **Year-over-Year Comparison** — overlay finish-time distributions and median segment splits across years for a race series
+- **Race Results** — browse finisher tables, time distributions, and race-day weather for a single race/year/age group
+- **Year-over-Year Comparison** — overlay finish-time distributions and segment splits across years; includes weather summary per year
+- **Athlete Search** — look up any athlete's full history across all races in the DB
 
 ## Adding new race data
 
-Data is loaded manually in two steps: register the event group (gets the list of races), then ingest results for each individual race.
-
-### 1. Register an event group
-
-Find the group UUID from the Competitor results URL:
-`https://labs-v2.competitor.com/results/event/<GROUP_UUID>`
+Use `fetch.py` to add a new race series. Find the group UUID from the Competitor results URL (`https://labs-v2.competitor.com/results/event/<GROUP_UUID>`), then:
 
 ```bash
-curl -sL "https://labs-v2.competitor.com/results/event/<GROUP_UUID>" \
-  | python3 storage.py register <GROUP_UUID>
+python3 fetch.py <GROUP_UUID>
 ```
 
-This upserts the `event_groups` row and stubs out a `races` row for every sub-event (year) in the group.
+This script:
+1. Registers all race years in the group
+2. Fetches results for any race year not yet stored
+3. Geocodes each race location and fetches race-day weather from Open-Meteo
+4. Is fully idempotent — safe to re-run
 
-### 2. Ingest results for each race
-
-```bash
-python3 storage.py status          # lists all races and which have results
-```
-
-For each race that hasn't been fetched (no ✓):
-
-```bash
-curl -sL "https://labs-v2.competitor.com/api/results?wtc_eventid=<WTC_EVENT_UUID>" \
-  | python3 storage.py ingest <WTC_EVENT_UUID>
-```
-
-Ingestion is idempotent — re-running a fetch that's already stored is a no-op.
+To backfill weather for existing races, just re-run `fetch.py` with the same UUID(s).
 
 ## Current data
 
