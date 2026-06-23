@@ -1,0 +1,20 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+dist/
+build/
+
+# Database — large binary, not committed; run storage.py to rebuild
+data/ironman.db
+data/ironman.db-shm
+data/ironman.db-wal
+
+# IDE
+.idea/
+.vscode/
+
+# Claude Code
+.claude/
