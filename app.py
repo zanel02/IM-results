@@ -227,8 +227,6 @@ with tab1:
     with st.expander("Race Day Weather", expanded=False):
         if weather is None:
             st.info("Weather not available — run `python3 fetch.py <group-uuid>` to load it.")
-        elif not _has_precip:
-            st.info("No precipitation recorded on race day.")
         else:
             tz_label = weather.get("timezone", "")
             wcols = st.columns(4)
@@ -265,20 +263,21 @@ with tab1:
             ).properties(height=180)
             st.altair_chart(temp_chart, use_container_width=True)
 
-            precip_chart = alt.Chart(hourly_df).mark_bar(
-                color="#60a5fa", opacity=0.85,
-            ).encode(
-                x=x_enc,
-                y=alt.Y(
-                    "precip_in:Q", title="Precip (in)",
-                    axis=alt.Axis(titleColor="#60a5fa"),
-                ),
-                tooltip=[
-                    alt.Tooltip("hour:O", title="Hour"),
-                    alt.Tooltip("precip_in:Q", title="Precip (in)", format=".3f"),
-                ],
-            ).properties(height=120)
-            st.altair_chart(precip_chart, use_container_width=True)
+            if _has_precip:
+                precip_chart = alt.Chart(hourly_df).mark_bar(
+                    color="#60a5fa", opacity=0.85,
+                ).encode(
+                    x=x_enc,
+                    y=alt.Y(
+                        "precip_in:Q", title="Precip (in)",
+                        axis=alt.Axis(titleColor="#60a5fa"),
+                    ),
+                    tooltip=[
+                        alt.Tooltip("hour:O", title="Hour"),
+                        alt.Tooltip("precip_in:Q", title="Precip (in)", format=".3f"),
+                    ],
+                ).properties(height=120)
+                st.altair_chart(precip_chart, use_container_width=True)
 
             wind_base = alt.Chart(hourly_df).encode(
                 x=alt.X("hour:O", title="", axis=alt.Axis(labelAngle=0))
