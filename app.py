@@ -60,7 +60,11 @@ def load_athlete_results(athlete_name: str) -> pd.DataFrame:
                   res.swim_fmt, res.t1_fmt, res.bike_fmt, res.t2_fmt, res.run_fmt, res.finish_fmt,
                   res.finish_secs, res.swim_secs, res.bike_secs, res.run_secs,
                   res.rank_overall, res.rank_gender, res.rank_division,
-                  r.event_name, r.year, r.distance_type, r.event_date
+                  r.event_name, r.year, r.distance_type, r.event_date,
+                  (SELECT COUNT(*) FROM results r2
+                   WHERE r2.race_id = res.race_id
+                     AND r2.age_group = res.age_group
+                     AND r2.status = 'FIN') AS division_size
            FROM results res
            JOIN races r ON res.race_id = r.id
            WHERE res.athlete_name = ?
@@ -439,7 +443,12 @@ with tab3:
         "Finish":     df_athlete["finish_fmt"],
         "Overall":    df_athlete["rank_overall"].astype("Int64"),
         "Gender":     df_athlete["rank_gender"].astype("Int64"),
-        "Division":   df_athlete["rank_division"].astype("Int64"),
+        "Division":   df_athlete.apply(
+            lambda row: f"{int(row['rank_division'])} / {int(row['division_size'])}"
+            if pd.notna(row["rank_division"]) and pd.notna(row["division_size"])
+            else "—",
+            axis=1,
+        ),
     })
     st.dataframe(display, use_container_width=True, hide_index=True)
 
