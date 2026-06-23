@@ -8,7 +8,7 @@ Historical Ironman triathlon results dashboard. Scrapes data from the WTC/Compet
 pip install streamlit pandas numpy
 ```
 
-The database (`data/ironman.db`) is committed to this repo — no initial fetch needed.
+The database is built automatically on first launch from seed files in `data/seed/`. No manual setup needed.
 
 ## Running the dashboard
 

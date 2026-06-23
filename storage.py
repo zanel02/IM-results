@@ -17,6 +17,8 @@ CLI usage:
   python storage.py status
 """
 
+import csv
+import io
 import re
 import json
 import sqlite3
@@ -289,7 +291,159 @@ def list_races() -> list[dict]:
     return [dict(r) for r in rows]
 
 
+_INT_COLS = frozenset({
+    "id", "race_id",
+    "finish_secs", "swim_secs", "t1_secs", "bike_secs", "t2_secs", "run_secs",
+    "rank_overall", "rank_gender", "rank_division",
+    "swim_rank_overall", "swim_rank_gender", "swim_rank_division",
+    "bike_rank_overall", "bike_rank_gender", "bike_rank_division",
+    "run_rank_overall", "run_rank_gender", "run_rank_division",
+})
+_FLOAT_COLS = frozenset({
+    "awa_points", "swim_dist_km", "bike_dist_km", "run_dist_km", "total_dist_km",
+})
+
+
+def export_seed(seed_dir: Path | None = None) -> None:
+    """Export all DB data to plaintext seed files (JSON + CSV) under data/seed/."""
+    if seed_dir is None:
+        seed_dir = Path(__file__).parent / "data" / "seed"
+    results_dir = seed_dir / "results"
+    weather_dir = seed_dir / "weather"
+    results_dir.mkdir(parents=True, exist_ok=True)
+    weather_dir.mkdir(parents=True, exist_ok=True)
+
+    with get_connection() as conn:
+        groups = [dict(r) for r in conn.execute("SELECT * FROM event_groups ORDER BY id").fetchall()]
+        (seed_dir / "event_groups.json").write_text(json.dumps(groups, indent=2))
+        print(f"Exported {len(groups)} event groups")
+
+        races = [dict(r) for r in conn.execute("SELECT * FROM races ORDER BY id").fetchall()]
+        (seed_dir / "races.json").write_text(json.dumps(races, indent=2))
+        print(f"Exported {len(races)} races")
+
+        result_cols = [d[0] for d in conn.execute("SELECT * FROM results LIMIT 0").description]
+        csv_count = 0
+        for race in races:
+            race_id = race["id"]
+            rows = conn.execute("SELECT * FROM results WHERE race_id = ? ORDER BY id", (race_id,)).fetchall()
+            if not rows:
+                continue
+            buf = io.StringIO()
+            writer = csv.DictWriter(buf, fieldnames=result_cols)
+            writer.writeheader()
+            for row in rows:
+                writer.writerow({k: ("" if v is None else v) for k, v in dict(row).items()})
+            (results_dir / f"{race_id}.csv").write_text(buf.getvalue())
+            csv_count += 1
+        print(f"Exported results CSVs for {csv_count} races")
+
+        weather_rows = [dict(r) for r in conn.execute("SELECT * FROM race_weather ORDER BY race_id").fetchall()]
+        for w in weather_rows:
+            (weather_dir / f"{w['race_id']}.json").write_text(json.dumps(w, indent=2))
+        print(f"Exported weather for {len(weather_rows)} races")
+
+
+def build_from_seed(seed_dir: Path | None = None) -> None:
+    """Build the DB from seed files. No-op if DB already has event groups loaded."""
+    if seed_dir is None:
+        seed_dir = Path(__file__).parent / "data" / "seed"
+    if not seed_dir.exists():
+        return
+
+    init_db()
+
+    with get_connection() as conn:
+        if conn.execute("SELECT COUNT(*) FROM event_groups").fetchone()[0] > 0:
+            return
+
+    groups = json.loads((seed_dir / "event_groups.json").read_text())
+    races  = json.loads((seed_dir / "races.json").read_text())
+
+    with get_connection() as conn:
+        conn.executemany(
+            "INSERT OR IGNORE INTO event_groups (id, group_uuid, name, sport, fetched_at) VALUES (:id, :group_uuid, :name, :sport, :fetched_at)",
+            groups,
+        )
+        conn.executemany(
+            """INSERT OR IGNORE INTO races
+               (id, group_id, wtc_eventid, event_name, external_name, event_date, year, distance_type, results_fetched_at)
+               VALUES (:id, :group_id, :wtc_eventid, :event_name, :external_name, :event_date, :year, :distance_type, :results_fetched_at)""",
+            races,
+        )
+        conn.commit()
+
+    results_dir = seed_dir / "results"
+    total_results = 0
+    if results_dir.exists():
+        for csv_file in sorted(results_dir.glob("*.csv"), key=lambda p: int(p.stem)):
+            with open(csv_file, newline="", encoding="utf-8") as f:
+                rows = [_coerce_result_row(r) for r in csv.DictReader(f)]
+            if not rows:
+                continue
+            with get_connection() as conn:
+                conn.executemany(
+                    """INSERT OR IGNORE INTO results (
+                        id, race_id, wtc_resultid, bib, athlete_name, first_name, last_name,
+                        gender, city, state, country_iso2, country_representing, age_group,
+                        status, finish_secs, swim_secs, t1_secs, bike_secs, t2_secs, run_secs,
+                        finish_fmt, swim_fmt, t1_fmt, bike_fmt, t2_fmt, run_fmt,
+                        rank_overall, rank_gender, rank_division,
+                        swim_rank_overall, swim_rank_gender, swim_rank_division,
+                        bike_rank_overall, bike_rank_gender, bike_rank_division,
+                        run_rank_overall, run_rank_gender, run_rank_division,
+                        awa_points, swim_dist_km, bike_dist_km, run_dist_km, total_dist_km
+                    ) VALUES (
+                        :id, :race_id, :wtc_resultid, :bib, :athlete_name, :first_name, :last_name,
+                        :gender, :city, :state, :country_iso2, :country_representing, :age_group,
+                        :status, :finish_secs, :swim_secs, :t1_secs, :bike_secs, :t2_secs, :run_secs,
+                        :finish_fmt, :swim_fmt, :t1_fmt, :bike_fmt, :t2_fmt, :run_fmt,
+                        :rank_overall, :rank_gender, :rank_division,
+                        :swim_rank_overall, :swim_rank_gender, :swim_rank_division,
+                        :bike_rank_overall, :bike_rank_gender, :bike_rank_division,
+                        :run_rank_overall, :run_rank_gender, :run_rank_division,
+                        :awa_points, :swim_dist_km, :bike_dist_km, :run_dist_km, :total_dist_km
+                    )""",
+                    rows,
+                )
+                conn.commit()
+            total_results += len(rows)
+
+    weather_dir = seed_dir / "weather"
+    total_weather = 0
+    if weather_dir.exists():
+        for json_file in sorted(weather_dir.glob("*.json"), key=lambda p: int(p.stem)):
+            w = json.loads(json_file.read_text())
+            with get_connection() as conn:
+                conn.execute(
+                    """INSERT OR IGNORE INTO race_weather
+                       (id, race_id, fetched_at, venue_lat, venue_lon, timezone, hourly_json,
+                        temp_f_7am, temp_f_high, total_precip_in, avg_wind_mph)
+                       VALUES (:id, :race_id, :fetched_at, :venue_lat, :venue_lon, :timezone, :hourly_json,
+                               :temp_f_7am, :temp_f_high, :total_precip_in, :avg_wind_mph)""",
+                    w,
+                )
+                conn.commit()
+            total_weather += 1
+
+    print(f"Built DB from seed: {len(groups)} groups, {len(races)} races, {total_results} results, {total_weather} weather rows")
+
+
 # ── internal helpers ─────────────────────────────────────────────────────────
+
+def _coerce_result_row(row: dict) -> dict:
+    out = {}
+    for k, v in row.items():
+        if v == "":
+            out[k] = None
+        elif k in _INT_COLS:
+            out[k] = int(v)
+        elif k in _FLOAT_COLS:
+            out[k] = float(v)
+        else:
+            out[k] = v
+    return out
+
 
 def _now() -> str:
     return datetime.now(timezone.utc).isoformat()

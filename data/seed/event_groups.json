@@ -1,0 +1,72 @@
+[
+  {
+    "id": 1,
+    "group_uuid": "eca2b3cf-881e-e511-9403-005056951bf1",
+    "name": "2026 IRONMAN 70.3 Coeur d'Alene",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T18:51:29.026584+00:00"
+  },
+  {
+    "id": 2,
+    "group_uuid": "a2bd7104-f82f-42f2-8943-1265d315a160",
+    "name": "2025 IRONMAN 70.3 Oregon",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T18:50:29.776591+00:00"
+  },
+  {
+    "id": 3,
+    "group_uuid": "94699a00-6f45-4a4c-ad00-fdd7d274c95b",
+    "name": "2026 IRONMAN 70.3 Rockford",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T18:52:45.223390+00:00"
+  },
+  {
+    "id": 4,
+    "group_uuid": "4598aa20-f278-e111-b16a-005056956277",
+    "name": "2025 IRONMAN 70.3 Calgary (partial bike)",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T19:04:12.621929+00:00"
+  },
+  {
+    "id": 5,
+    "group_uuid": "cd32ce29-af1d-ea11-a811-000d3a5a1f86",
+    "name": "2025 IRONMAN 70.3 Washington Tri-Cities",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T19:02:28.210103+00:00"
+  },
+  {
+    "id": 6,
+    "group_uuid": "3998aa20-f278-e111-b16a-005056956277",
+    "name": "2025 IRONMAN 70.3 Boise",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T19:03:50.581939+00:00"
+  },
+  {
+    "id": 7,
+    "group_uuid": "a581b0d5-23f2-e711-941c-005056951bf1",
+    "name": "2025 IRONMAN 70.3 La Quinta",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T18:50:09.306026+00:00"
+  },
+  {
+    "id": 8,
+    "group_uuid": "4798aa20-f278-e111-b16a-005056956277",
+    "name": "2026 IRONMAN 70.3 Oceanside",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T19:02:38.231632+00:00"
+  },
+  {
+    "id": 9,
+    "group_uuid": "76fcef91-46b1-e411-9400-005056951bf1",
+    "name": "2025 IRONMAN 70.3 Santa Cruz",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T19:03:06.659299+00:00"
+  },
+  {
+    "id": 10,
+    "group_uuid": "d74670f6-7fb2-4813-96e1-fae4ab1b948c",
+    "name": "2025 IRONMAN California",
+    "sport": "Triathlon",
+    "fetched_at": "2026-06-23T19:03:34.274150+00:00"
+  }
+]

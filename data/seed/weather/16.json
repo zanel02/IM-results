@@ -1,0 +1,13 @@
+{
+  "id": 105,
+  "race_id": 16,
+  "fetched_at": "2026-06-23T19:04:15.191194+00:00",
+  "venue_lat": 51.0456064,
+  "venue_lon": -114.057541,
+  "timezone": "America/Edmonton",
+  "hourly_json": "[{\"hour\": \"06:00\", \"temp_f\": 52.3, \"humidity\": 94, \"wind_mph\": 2.4, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"07:00\", \"temp_f\": 52.7, \"humidity\": 93, \"wind_mph\": 2.2, \"wind_dir\": \"N\", \"precip_in\": 0.004, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"08:00\", \"temp_f\": 53.8, \"humidity\": 91, \"wind_mph\": 4.8, \"wind_dir\": \"N\", \"precip_in\": 0.008, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"09:00\", \"temp_f\": 53.7, \"humidity\": 90, \"wind_mph\": 4.2, \"wind_dir\": \"N\", \"precip_in\": 0.008, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"10:00\", \"temp_f\": 55.3, \"humidity\": 86, \"wind_mph\": 5.5, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"11:00\", \"temp_f\": 57.7, \"humidity\": 77, \"wind_mph\": 4.7, \"wind_dir\": \"NE\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"12:00\", \"temp_f\": 58.4, \"humidity\": 76, \"wind_mph\": 4.7, \"wind_dir\": \"NE\", \"precip_in\": 0.004, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"13:00\", \"temp_f\": 59.2, \"humidity\": 76, \"wind_mph\": 3.8, \"wind_dir\": \"NE\", \"precip_in\": 0.004, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"14:00\", \"temp_f\": 59.9, \"humidity\": 76, \"wind_mph\": 4.2, \"wind_dir\": \"NE\", \"precip_in\": 0.012, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"15:00\", \"temp_f\": 60.8, \"humidity\": 74, \"wind_mph\": 4.3, \"wind_dir\": \"E\", \"precip_in\": 0.012, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"16:00\", \"temp_f\": 62.7, \"humidity\": 71, \"wind_mph\": 3.2, \"wind_dir\": \"E\", \"precip_in\": 0.004, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"17:00\", \"temp_f\": 60.6, \"humidity\": 75, \"wind_mph\": 4.5, \"wind_dir\": \"NE\", \"precip_in\": 0.016, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"18:00\", \"temp_f\": 59.7, \"humidity\": 77, \"wind_mph\": 3.9, \"wind_dir\": \"NE\", \"precip_in\": 0.157, \"conditions\": \"Rain\"}]",
+  "temp_f_7am": 52.7,
+  "temp_f_high": 62.7,
+  "total_precip_in": 0.229,
+  "avg_wind_mph": 4.0
+}

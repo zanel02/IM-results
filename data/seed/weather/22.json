@@ -1,0 +1,13 @@
+{
+  "id": 7,
+  "race_id": 22,
+  "fetched_at": "2026-06-23T18:49:43.985877+00:00",
+  "venue_lat": 51.0456064,
+  "venue_lon": -114.057541,
+  "timezone": "America/Edmonton",
+  "hourly_json": "[{\"hour\": \"06:00\", \"temp_f\": 58.1, \"humidity\": 86, \"wind_mph\": 6.8, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"07:00\", \"temp_f\": 60.0, \"humidity\": 82, \"wind_mph\": 3.8, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"08:00\", \"temp_f\": 64.0, \"humidity\": 72, \"wind_mph\": 4.5, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"09:00\", \"temp_f\": 68.1, \"humidity\": 66, \"wind_mph\": 4.1, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"10:00\", \"temp_f\": 72.8, \"humidity\": 59, \"wind_mph\": 4.9, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"11:00\", \"temp_f\": 76.6, \"humidity\": 54, \"wind_mph\": 6.6, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"12:00\", \"temp_f\": 80.3, \"humidity\": 47, \"wind_mph\": 7.5, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"13:00\", \"temp_f\": 83.0, \"humidity\": 42, \"wind_mph\": 9.5, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"14:00\", \"temp_f\": 84.9, \"humidity\": 37, \"wind_mph\": 10.9, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"15:00\", \"temp_f\": 86.1, \"humidity\": 34, \"wind_mph\": 10.1, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"16:00\", \"temp_f\": 86.6, \"humidity\": 33, \"wind_mph\": 9.6, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"17:00\", \"temp_f\": 85.9, \"humidity\": 36, \"wind_mph\": 10.0, \"wind_dir\": \"E\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"18:00\", \"temp_f\": 85.6, \"humidity\": 41, \"wind_mph\": 7.2, \"wind_dir\": \"E\", \"precip_in\": 0.0, \"conditions\": \"Partly Cloudy\"}]",
+  "temp_f_7am": 60.0,
+  "temp_f_high": 86.6,
+  "total_precip_in": 0.0,
+  "avg_wind_mph": 7.3
+}

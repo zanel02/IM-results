@@ -1,0 +1,13 @@
+{
+  "id": 86,
+  "race_id": 77,
+  "fetched_at": "2026-06-23T19:03:12.143580+00:00",
+  "venue_lat": 37.050096,
+  "venue_lon": -121.99059,
+  "timezone": "America/Los_Angeles",
+  "hourly_json": "[{\"hour\": \"06:00\", \"temp_f\": 56.7, \"humidity\": 81, \"wind_mph\": 0.9, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"07:00\", \"temp_f\": 55.7, \"humidity\": 83, \"wind_mph\": 1.1, \"wind_dir\": \"NE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"08:00\", \"temp_f\": 61.1, \"humidity\": 71, \"wind_mph\": 1.7, \"wind_dir\": \"NE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"09:00\", \"temp_f\": 68.0, \"humidity\": 56, \"wind_mph\": 1.4, \"wind_dir\": \"E\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"10:00\", \"temp_f\": 73.8, \"humidity\": 45, \"wind_mph\": 1.7, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"11:00\", \"temp_f\": 77.5, \"humidity\": 41, \"wind_mph\": 2.3, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"12:00\", \"temp_f\": 81.3, \"humidity\": 38, \"wind_mph\": 3.1, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"13:00\", \"temp_f\": 83.7, \"humidity\": 38, \"wind_mph\": 3.6, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"14:00\", \"temp_f\": 84.9, \"humidity\": 38, \"wind_mph\": 3.8, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"15:00\", \"temp_f\": 85.5, \"humidity\": 38, \"wind_mph\": 3.4, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"16:00\", \"temp_f\": 85.2, \"humidity\": 36, \"wind_mph\": 2.5, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"17:00\", \"temp_f\": 83.4, \"humidity\": 34, \"wind_mph\": 2.3, \"wind_dir\": \"E\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"18:00\", \"temp_f\": 80.5, \"humidity\": 37, \"wind_mph\": 1.8, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}]",
+  "temp_f_7am": 55.7,
+  "temp_f_high": 85.5,
+  "total_precip_in": 0.0,
+  "avg_wind_mph": 2.3
+}

@@ -7,7 +7,8 @@ venv/
 dist/
 build/
 
-# SQLite WAL/SHM transient files (not the DB itself — DB is committed)
+# SQLite DB and transient WAL/SHM files — built from seed files on first run
+data/ironman.db
 data/ironman.db-shm
 data/ironman.db-wal
 

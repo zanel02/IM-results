@@ -1,0 +1,13 @@
+{
+  "id": 20,
+  "race_id": 54,
+  "fetched_at": "2026-06-23T18:50:22.246812+00:00",
+  "venue_lat": 33.7039847,
+  "venue_lon": -116.3126504,
+  "timezone": "America/Los_Angeles",
+  "hourly_json": "[{\"hour\": \"06:00\", \"temp_f\": 58.7, \"humidity\": 43, \"wind_mph\": 3.8, \"wind_dir\": \"SW\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"07:00\", \"temp_f\": 57.5, \"humidity\": 41, \"wind_mph\": 4.3, \"wind_dir\": \"SW\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"08:00\", \"temp_f\": 59.0, \"humidity\": 37, \"wind_mph\": 3.1, \"wind_dir\": \"W\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"09:00\", \"temp_f\": 54.7, \"humidity\": 59, \"wind_mph\": 3.8, \"wind_dir\": \"W\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"10:00\", \"temp_f\": 58.9, \"humidity\": 44, \"wind_mph\": 1.9, \"wind_dir\": \"W\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"11:00\", \"temp_f\": 60.3, \"humidity\": 44, \"wind_mph\": 1.6, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Mainly Clear\"}, {\"hour\": \"12:00\", \"temp_f\": 61.8, \"humidity\": 43, \"wind_mph\": 2.6, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"13:00\", \"temp_f\": 62.8, \"humidity\": 41, \"wind_mph\": 2.6, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"14:00\", \"temp_f\": 63.6, \"humidity\": 40, \"wind_mph\": 2.2, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"15:00\", \"temp_f\": 63.6, \"humidity\": 40, \"wind_mph\": 1.6, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Clear\"}, {\"hour\": \"16:00\", \"temp_f\": 63.6, \"humidity\": 41, \"wind_mph\": 1.7, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"17:00\", \"temp_f\": 62.3, \"humidity\": 49, \"wind_mph\": 2.9, \"wind_dir\": \"W\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"18:00\", \"temp_f\": 59.8, \"humidity\": 54, \"wind_mph\": 3.9, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}]",
+  "temp_f_7am": 57.5,
+  "temp_f_high": 63.6,
+  "total_precip_in": 0.0,
+  "avg_wind_mph": 2.8
+}

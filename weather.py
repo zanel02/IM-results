@@ -24,6 +24,20 @@ _ARCHIVE   = "https://archive-api.open-meteo.com/v1/archive"
 _FORECAST  = "https://api.open-meteo.com/v1/forecast"
 _UA        = "ironman-results-dashboard/1.0 (personal project)"
 
+# Overrides for names that are ambiguous or too generic for Nominatim.
+# Keyed by the string AFTER stripping year + "IRONMAN [70.3] " prefix but BEFORE
+# stripping colon/parenthesis suffixes (so we can distinguish 70.3 from full).
+_LOCATION_OVERRIDES: dict[str, str] = {
+    # "IRONMAN 70.3 California: Triathlon" (2005-2013) was held in Oceanside, CA
+    "California: Triathlon": "Oceanside, California, USA",
+    # "IRONMAN California" (full distance) is held at Folsom Lake, Sacramento, CA
+    "California": "Folsom, California, USA",
+    # "IRONMAN 70.3 Washington" (2023, standalone) was held in Kennewick/Tri-Cities, WA
+    "Washington": "Kennewick, Washington, USA",
+    # "IRONMAN 70.3 Santa Cruz" is in Santa Cruz, CA — Nominatim prefers Tenerife without a country hint
+    "Santa Cruz": "Santa Cruz, California, USA",
+}
+
 _WMO_CODES = {
     0: "Clear", 1: "Mainly Clear", 2: "Partly Cloudy", 3: "Overcast",
     45: "Fog", 48: "Icy Fog",
@@ -41,17 +55,43 @@ def _wind_dir(degrees: float) -> str:
     return _COMPASS[round(degrees / 45) % 8]
 
 
-def _geocode(event_name: str) -> tuple[float, float]:
-    """Strip year + IRONMAN prefix, query Nominatim, return (lat, lon)."""
-    name = re.sub(r"^\d{4}\s+", "", event_name)
-    name = re.sub(r"^IRONMAN\s+(70\.3\s+)?", "", name, flags=re.IGNORECASE).strip()
-    params = urllib.parse.urlencode({"q": name, "format": "json", "limit": "1"})
+def _nominatim_search(q: str, limit: int = 5) -> list:
+    params = urllib.parse.urlencode({"q": q, "format": "json", "limit": str(limit)})
     req = urllib.request.Request(f"{_NOMINATIM}?{params}", headers={"User-Agent": _UA})
     with urllib.request.urlopen(req, timeout=10) as r:
-        results = json.loads(r.read().decode())
+        return json.loads(r.read().decode())
+
+
+def _geocode(event_name: str) -> tuple[float, float]:
+    """Strip year + IRONMAN prefix, query Nominatim, return (lat, lon)."""
+    # Step 1: strip year prefix and IRONMAN/70.3 distance prefix
+    name = re.sub(r"^\d{4}\s+", "", event_name)
+    name = re.sub(r"^IRONMAN\s+(70\.3\s+)?", "", name, flags=re.IGNORECASE).strip()
+
+    # Step 2: check override BEFORE any further cleaning (key may include ": ..." suffix)
+    query = _LOCATION_OVERRIDES.get(name)
+
+    if query is None:
+        # Step 3: clean legacy/modified-event suffixes, then check overrides again
+        cleaned = re.sub(r"\s*:.*$", "", name)                                      # ": Triathlon"
+        cleaned = re.sub(r"\s*\(.*\).*$", "", cleaned)                              # "(partial bike)"
+        cleaned = re.sub(r"\s+(Bike-?Run|Aquabike|Swim-?Run|Duathlon)$", "", cleaned, flags=re.IGNORECASE)
+        cleaned = cleaned.strip()
+        query = _LOCATION_OVERRIDES.get(cleaned, cleaned)
+
+    results = _nominatim_search(query)
+
+    if not results:
+        results = _nominatim_search(f"{query}, USA")
+
     if not results:
         raise ValueError(f"Nominatim: no results for {name!r}")
-    return float(results[0]["lat"]), float(results[0]["lon"])
+
+    # Prefer USA/Canada results to avoid wrong-continent matches (e.g. Santa Cruz → Tenerife)
+    na = [r for r in results if any(c in r.get("display_name", "") for c in ("United States", "Canada"))]
+    best = na[0] if na else results[0]
+
+    return float(best["lat"]), float(best["lon"])
 
 
 def is_weather_fetched(race_id: int) -> bool:

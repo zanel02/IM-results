@@ -1,0 +1,13 @@
+{
+  "id": 96,
+  "race_id": 87,
+  "fetched_at": "2026-06-23T19:03:39.935327+00:00",
+  "venue_lat": 38.6779591,
+  "venue_lon": -121.176058,
+  "timezone": "America/Los_Angeles",
+  "hourly_json": "[{\"hour\": \"06:00\", \"temp_f\": 56.7, \"humidity\": 83, \"wind_mph\": 5.7, \"wind_dir\": \"E\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"07:00\", \"temp_f\": 57.6, \"humidity\": 83, \"wind_mph\": 5.2, \"wind_dir\": \"E\", \"precip_in\": 0.028, \"conditions\": \"Drizzle\"}, {\"hour\": \"08:00\", \"temp_f\": 58.7, \"humidity\": 85, \"wind_mph\": 4.7, \"wind_dir\": \"E\", \"precip_in\": 0.059, \"conditions\": \"Light Rain\"}, {\"hour\": \"09:00\", \"temp_f\": 59.6, \"humidity\": 87, \"wind_mph\": 3.9, \"wind_dir\": \"NE\", \"precip_in\": 0.067, \"conditions\": \"Light Rain\"}, {\"hour\": \"10:00\", \"temp_f\": 60.9, \"humidity\": 83, \"wind_mph\": 5.2, \"wind_dir\": \"SE\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"11:00\", \"temp_f\": 61.3, \"humidity\": 84, \"wind_mph\": 5.5, \"wind_dir\": \"E\", \"precip_in\": 0.008, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"12:00\", \"temp_f\": 64.4, \"humidity\": 76, \"wind_mph\": 5.7, \"wind_dir\": \"SE\", \"precip_in\": 0.008, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"13:00\", \"temp_f\": 66.7, \"humidity\": 69, \"wind_mph\": 3.7, \"wind_dir\": \"E\", \"precip_in\": 0.004, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"14:00\", \"temp_f\": 67.0, \"humidity\": 68, \"wind_mph\": 3.0, \"wind_dir\": \"SW\", \"precip_in\": 0.008, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"15:00\", \"temp_f\": 61.6, \"humidity\": 86, \"wind_mph\": 2.8, \"wind_dir\": \"SW\", \"precip_in\": 0.028, \"conditions\": \"Drizzle\"}, {\"hour\": \"16:00\", \"temp_f\": 63.4, \"humidity\": 80, \"wind_mph\": 3.9, \"wind_dir\": \"E\", \"precip_in\": 0.051, \"conditions\": \"Light Rain\"}, {\"hour\": \"17:00\", \"temp_f\": 61.8, \"humidity\": 90, \"wind_mph\": 7.0, \"wind_dir\": \"S\", \"precip_in\": 0.004, \"conditions\": \"Light Drizzle\"}, {\"hour\": \"18:00\", \"temp_f\": 61.2, \"humidity\": 93, \"wind_mph\": 6.1, \"wind_dir\": \"S\", \"precip_in\": 0.02, \"conditions\": \"Drizzle\"}]",
+  "temp_f_7am": 57.6,
+  "temp_f_high": 67.0,
+  "total_precip_in": 0.285,
+  "avg_wind_mph": 4.8
+}

@@ -6,7 +6,13 @@ import numpy as np
 import pandas as pd
 import streamlit as st
 
+from storage import build_from_seed
+
 DB_PATH = Path(__file__).parent / "data" / "ironman.db"
+
+# Build DB from seed files if it doesn't exist yet (first run after cloning)
+if not DB_PATH.exists():
+    build_from_seed()
 
 st.set_page_config(page_title="Ironman Results", layout="wide")
 

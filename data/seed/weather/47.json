@@ -1,0 +1,13 @@
+{
+  "id": 103,
+  "race_id": 47,
+  "fetched_at": "2026-06-23T19:04:04.324507+00:00",
+  "venue_lat": 43.6166163,
+  "venue_lon": -116.200886,
+  "timezone": "America/Boise",
+  "hourly_json": "[{\"hour\": \"06:00\", \"temp_f\": 54.3, \"humidity\": 82, \"wind_mph\": 3.1, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"07:00\", \"temp_f\": 54.2, \"humidity\": 83, \"wind_mph\": 2.2, \"wind_dir\": \"N\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"08:00\", \"temp_f\": 57.7, \"humidity\": 81, \"wind_mph\": 3.8, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"09:00\", \"temp_f\": 61.8, \"humidity\": 67, \"wind_mph\": 6.2, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"10:00\", \"temp_f\": 64.5, \"humidity\": 59, \"wind_mph\": 7.0, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"11:00\", \"temp_f\": 66.8, \"humidity\": 52, \"wind_mph\": 6.7, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"12:00\", \"temp_f\": 68.8, \"humidity\": 48, \"wind_mph\": 6.1, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"13:00\", \"temp_f\": 71.2, \"humidity\": 44, \"wind_mph\": 5.5, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"14:00\", \"temp_f\": 72.4, \"humidity\": 41, \"wind_mph\": 5.0, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"15:00\", \"temp_f\": 72.9, \"humidity\": 40, \"wind_mph\": 4.7, \"wind_dir\": \"NW\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"16:00\", \"temp_f\": 73.2, \"humidity\": 39, \"wind_mph\": 4.0, \"wind_dir\": \"W\", \"precip_in\": 0.0, \"conditions\": \"Overcast\"}, {\"hour\": \"17:00\", \"temp_f\": 73.2, \"humidity\": 38, \"wind_mph\": 3.3, \"wind_dir\": \"SW\", \"precip_in\": 0.0, \"conditions\": \"Partly Cloudy\"}, {\"hour\": \"18:00\", \"temp_f\": 72.9, \"humidity\": 39, \"wind_mph\": 3.8, \"wind_dir\": \"S\", \"precip_in\": 0.0, \"conditions\": \"Partly Cloudy\"}]",
+  "temp_f_7am": 54.2,
+  "temp_f_high": 73.2,
+  "total_precip_in": 0.0,
+  "avg_wind_mph": 4.7
+}
