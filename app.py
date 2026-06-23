@@ -250,9 +250,17 @@ with tab1:
 # TAB 2 — year-over-year comparison
 # ══════════════════════════════════════════════════════════════════════════════
 
+PERCENTILE_OPTIONS = {
+    "10th": 10,
+    "25th": 25,
+    "50th (Median)": 50,
+    "75th": 75,
+    "90th": 90,
+}
+
 with tab2:
     st.subheader("Select a Series")
-    ctrl_a, ctrl_b, ctrl_c = st.columns(3)
+    ctrl_a, ctrl_b, ctrl_c, ctrl_d = st.columns(4)
 
     with ctrl_a:
         compare_series_idx = st.selectbox(
@@ -280,6 +288,10 @@ with tab2:
             )["age_group"].tolist()
         )
         ag_compare = st.selectbox("Age Group", series_ag_options, key="t2_ag")
+
+    with ctrl_d:
+        pct_label = st.selectbox("Percentile", list(PERCENTILE_OPTIONS.keys()), index=2, key="t2_pct")
+    pct = PERCENTILE_OPTIONS[pct_label] / 100
 
     st.divider()
 
@@ -323,14 +335,14 @@ with tab2:
         n_dnf = int((yr_all["status"] == "DNF").sum())
         dnf_pct = f"{100 * n_dnf / len(yr_all):.1f}%" if len(yr_all) else "—"
         rows.append({
-            "Year": year,
-            "Finishers": n_fin,
-            "DNF": n_dnf,
-            "DNF %": dnf_pct,
-            "Median Finish": fmt_time(yr_fin["finish_secs"].median()),
-            "Median Swim":   fmt_time(yr_fin["swim_secs"].median()),
-            "Median Bike":   fmt_time(yr_fin["bike_secs"].median()),
-            "Median Run":    fmt_time(yr_fin["run_secs"].median()),
+            "Year":                        year,
+            "Finishers":                   n_fin,
+            "DNF":                         n_dnf,
+            "DNF %":                       dnf_pct,
+            f"{pct_label} Finish":         fmt_time(yr_fin["finish_secs"].quantile(pct)),
+            f"{pct_label} Swim":           fmt_time(yr_fin["swim_secs"].quantile(pct)),
+            f"{pct_label} Bike":           fmt_time(yr_fin["bike_secs"].quantile(pct)),
+            f"{pct_label} Run":            fmt_time(yr_fin["run_secs"].quantile(pct)),
         })
 
     st.dataframe(pd.DataFrame(rows), use_container_width=True, hide_index=True)
@@ -366,7 +378,7 @@ with tab2:
     # ── median splits ─────────────────────────────────────────────────────────
 
     st.divider()
-    st.subheader("Median Segment Times by Year")
+    st.subheader(f"{pct_label} Percentile Segment Times by Year")
 
     segments = [("Swim", "swim_secs"), ("Bike", "bike_secs"), ("Run", "run_secs")]
     col_charts = st.columns(len(segments))
@@ -374,14 +386,14 @@ with tab2:
     for col, (label, col_secs) in zip(col_charts, segments):
         with col:
             st.markdown(f"**{label}**")
-            medians = (
+            pct_vals = (
                 df_series.groupby("year")[col_secs]
-                .median()
+                .quantile(pct)
                 .loc[lambda s: s.index.isin(selected_years)]
                 .sort_index()
             )
-            median_mins = (medians / 60).rename("Median (min)")
-            st.bar_chart(median_mins, height=260, use_container_width=True)
+            pct_mins = (pct_vals / 60).rename(f"{pct_label} (min)")
+            st.bar_chart(pct_mins, height=260, use_container_width=True)
 
 
 # ══════════════════════════════════════════════════════════════════════════════
