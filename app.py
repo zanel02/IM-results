@@ -223,9 +223,12 @@ with tab1:
     # ── weather ───────────────────────────────────────────────────────────────
 
     weather = load_weather_data(int(race["id"]))
+    _has_precip = weather is not None and (weather.get("total_precip_in") or 0) > 0
     with st.expander("Race Day Weather", expanded=False):
         if weather is None:
             st.info("Weather not available — run `python3 fetch.py <group-uuid>` to load it.")
+        elif not _has_precip:
+            st.info("No precipitation recorded on race day.")
         else:
             tz_label = weather.get("timezone", "")
             wcols = st.columns(4)

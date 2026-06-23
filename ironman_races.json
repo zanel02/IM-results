@@ -1,0 +1,1339 @@
+[
+  {
+    "race_name": "4184 Marathon",
+    "slug": "4184-marathon",
+    "group_uuid": "dd657011-7786-417a-a46a-5670cd479750",
+    "ironman_url": "https://www.ironman.com/races/4184-marathon/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Bohol",
+    "slug": "5150-bohol",
+    "group_uuid": "51a4d596-41ef-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/5150-bohol/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Camiguin",
+    "slug": "5150-camiguin",
+    "group_uuid": "48aa57ff-22de-405f-baa2-11e5995a013d",
+    "ironman_url": "https://www.ironman.com/races/5150-camiguin/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Cartagena",
+    "slug": "5150-cartagena",
+    "group_uuid": "028d3f59-0937-4d1b-be6c-6c506756143f",
+    "ironman_url": "https://www.ironman.com/races/5150-cartagena/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Cervia",
+    "slug": "5150-cervia",
+    "group_uuid": "392527de-6796-44a2-9170-bb56f993b969",
+    "ironman_url": "https://www.ironman.com/races/5150-cervia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Chennai",
+    "slug": "5150-chennai",
+    "group_uuid": "bcb7933c-be95-4534-aa8a-fac5d3773eed",
+    "ironman_url": "https://www.ironman.com/races/5150-chennai/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Desaru Coast",
+    "slug": "5150-desaru-coast",
+    "group_uuid": "d21b906d-b7b7-e911-a986-000d3a364086",
+    "ironman_url": "https://www.ironman.com/races/5150-desaru-coast/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Erkner",
+    "slug": "5150-erkner",
+    "group_uuid": "7d978e9b-25a4-4914-89d9-457a3e708412",
+    "ironman_url": "https://www.ironman.com/races/5150-erkner/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Fab",
+    "slug": "5150-fab",
+    "group_uuid": "6639c4af-7a26-43b5-bf85-86c797f70195",
+    "ironman_url": "https://www.ironman.com/races/5150-fab/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Gdynia",
+    "slug": "5150-gdynia",
+    "group_uuid": "98ccc57b-9946-4d79-9766-2ff3758ceb5c",
+    "ironman_url": "https://www.ironman.com/races/5150-gdynia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Gualeguaychu",
+    "slug": "5150-gualeguaychu",
+    "group_uuid": "b52c7ad3-67c9-4b17-8d28-da7367ae1276",
+    "ironman_url": "https://www.ironman.com/races/5150-gualeguaychu/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Guimaras",
+    "slug": "5150-guimaras",
+    "group_uuid": "cbd52b87-e406-4b7c-8a93-1d2f20f22bfd",
+    "ironman_url": "https://www.ironman.com/races/5150-guimaras/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Hradec Kralove",
+    "slug": "5150-hradec-kralove",
+    "group_uuid": "a784d6d6-1bf7-4ff2-b19c-2bc6273dd3fa",
+    "ironman_url": "https://www.ironman.com/races/5150-hradec-kralove/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Knokke Heist",
+    "slug": "5150-knokke-heist",
+    "group_uuid": "fe3f93f3-7148-4ace-bfcf-cbb775068fef",
+    "ironman_url": "https://www.ironman.com/races/5150-knokke-heist/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Kraichgau",
+    "slug": "5150-kraichgau",
+    "group_uuid": "fe5e173f-d20b-44cc-80d0-875a8634a292",
+    "ironman_url": "https://www.ironman.com/races/5150-kraichgau/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Mont Tremblant",
+    "slug": "5150-mont-tremblant",
+    "group_uuid": "08673af6-8cb3-4a51-b0d4-9cd7fb695681",
+    "ironman_url": "https://www.ironman.com/races/5150-mont-tremblant/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Nelson Mandela Bay",
+    "slug": "5150-nelson-mandela-bay",
+    "group_uuid": "8cad8bc2-f895-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/5150-nelson-mandela-bay/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Poznan",
+    "slug": "5150-poznan",
+    "group_uuid": "c17552a7-c370-4cd8-b53c-3075faae83e9",
+    "ironman_url": "https://www.ironman.com/races/5150-poznan/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Salinas",
+    "slug": "5150-salinas",
+    "group_uuid": "0e47464c-1fe7-4730-93f8-f1bec237909e",
+    "ironman_url": "https://www.ironman.com/races/5150-salinas/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Samal",
+    "slug": "5150-samal",
+    "group_uuid": "3126ed54-181c-403b-8e2c-7fc7ee46e985",
+    "ironman_url": "https://www.ironman.com/races/5150-samal/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Warsaw",
+    "slug": "5150-warsaw",
+    "group_uuid": "1a4a1186-e8b0-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/5150-warsaw/results",
+    "subevents": []
+  },
+  {
+    "race_name": "5150 Westfriesland",
+    "slug": "5150-westfriesland",
+    "group_uuid": "4169b31f-c518-e911-a972-000d3a36478d",
+    "ironman_url": "https://www.ironman.com/races/5150-westfriesland/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Acapulco",
+    "slug": "im703-acapulco",
+    "group_uuid": "fa93e2dc-d106-487c-b78e-08eecf010ca5",
+    "ironman_url": "https://www.ironman.com/races/im703-acapulco/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Agadir",
+    "slug": "im703-agadir",
+    "group_uuid": "f3169d46-d6c3-4a26-a212-bfd6a2eb87ed",
+    "ironman_url": "https://www.ironman.com/races/im703-agadir/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Aix En Provence",
+    "slug": "im703-aix-en-provence",
+    "group_uuid": "6d98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-aix-en-provence/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Alghero",
+    "slug": "im703-alghero",
+    "group_uuid": "60d9acc4-116e-4e81-beec-22f3b9b76425",
+    "ironman_url": "https://www.ironman.com/races/im703-alghero/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Aracaju Sergipe",
+    "slug": "im703-aracaju-sergipe",
+    "group_uuid": "6954cd72-7775-45f5-8b85-3cf75b475837",
+    "ironman_url": "https://www.ironman.com/races/im703-aracaju-sergipe/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Augusta",
+    "slug": "im703-augusta",
+    "group_uuid": "3398aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-augusta/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Bahrain",
+    "slug": "im703-bahrain",
+    "group_uuid": "3f4b6a7b-ba16-e511-9402-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-bahrain/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Baku",
+    "slug": "im703-baku",
+    "group_uuid": "ba996145-f3ab-47db-9edf-88c17ca8968c",
+    "ironman_url": "https://www.ironman.com/races/im703-baku/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Barranquilla",
+    "slug": "im703-barranquilla",
+    "group_uuid": "8649b910-50d4-4ca5-b907-49900d91a717",
+    "ironman_url": "https://www.ironman.com/races/im703-barranquilla/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Belgrade",
+    "slug": "im703-belgrade",
+    "group_uuid": "41e1ec53-e777-473b-a015-2c64c1f56442",
+    "ironman_url": "https://www.ironman.com/races/im703-belgrade/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Boise",
+    "slug": "im703-boise",
+    "group_uuid": "3998aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-boise/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Bolton",
+    "slug": "im703-bolton",
+    "group_uuid": "3a228722-c851-4db8-b5af-31254f16d701",
+    "ironman_url": "https://www.ironman.com/races/im703-bolton/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Boulder",
+    "slug": "im703-boulder",
+    "group_uuid": "3b98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-boulder/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Brasilia",
+    "slug": "im703-brasilia",
+    "group_uuid": "3f98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-brasilia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Buenos Aires",
+    "slug": "im703-buenos-aires",
+    "group_uuid": "e7996dac-cd28-45e0-8ba2-73b711571958",
+    "ironman_url": "https://www.ironman.com/races/im703-buenos-aires/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Cairns",
+    "slug": "im703-cairns",
+    "group_uuid": "eec737b8-84fe-e111-aa75-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-cairns/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Calgary",
+    "slug": "im703-calgary",
+    "group_uuid": "4598aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-calgary/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Campeche",
+    "slug": "im703-campeche",
+    "group_uuid": "839b1d67-802e-e611-940e-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-campeche/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Cap Cana",
+    "slug": "im703-cap-cana",
+    "group_uuid": "e56852ab-06cc-4094-bc96-38d696ee15a6",
+    "ironman_url": "https://www.ironman.com/races/im703-cap-cana/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Cartagena",
+    "slug": "im703-cartagena",
+    "group_uuid": "dd309e2b-8a97-e511-9409-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-cartagena/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Cascais",
+    "slug": "im703-cascais",
+    "group_uuid": "86f0cd79-3580-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-cascais/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Cebu Philippines",
+    "slug": "im703-cebu-philippines",
+    "group_uuid": "6f98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-cebu-philippines/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Chattanooga",
+    "slug": "im703-chattanooga",
+    "group_uuid": "e2352999-586b-e411-93fa-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-chattanooga/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Coeur Dalene",
+    "slug": "im703-coeur-dalene",
+    "group_uuid": "eca2b3cf-881e-e511-9403-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-coeur-dalene/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Colombo",
+    "slug": "im703-colombo",
+    "group_uuid": "ca7a8458-3a3a-e711-9417-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-colombo/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Cozumel",
+    "slug": "im703-cozumel",
+    "group_uuid": "4f98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-cozumel/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Croatia",
+    "slug": "im703-croatia",
+    "group_uuid": "dec32902-8a8c-4707-ad87-fa27be294d7a",
+    "ironman_url": "https://www.ironman.com/races/im703-croatia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Curitiba",
+    "slug": "im703-curitiba",
+    "group_uuid": "8a20411f-7bfd-4f09-997e-f5ad9ee1aac4",
+    "ironman_url": "https://www.ironman.com/races/im703-curitiba/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Dallas Little Elm",
+    "slug": "im703-dallas-little-elm",
+    "group_uuid": "cd10847f-9798-495e-8dff-1837a20eaf5e",
+    "ironman_url": "https://www.ironman.com/races/im703-dallas-little-elm/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Danang",
+    "slug": "im703-danang",
+    "group_uuid": "7d32fb34-06b2-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-danang/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Davao Philippines",
+    "slug": "im703-davao-philippines",
+    "group_uuid": "3c1dd549-5aa4-e711-9419-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-davao-philippines/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Des Moines",
+    "slug": "im703-des-moines",
+    "group_uuid": "ed940c67-c299-e911-a97a-000d3a37468c",
+    "ironman_url": "https://www.ironman.com/races/im703-des-moines/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Desaru Coast",
+    "slug": "im703-desaru-coast",
+    "group_uuid": "f8b9aa5e-b5b7-e911-a986-000d3a364086",
+    "ironman_url": "https://www.ironman.com/races/im703-desaru-coast/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Dhofar",
+    "slug": "im703-dhofar",
+    "group_uuid": "d7e1a857-a41b-4be8-a2e5-9c5b096640a4",
+    "ironman_url": "https://www.ironman.com/races/im703-dhofar/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Duisburg",
+    "slug": "im703-duisburg",
+    "group_uuid": "9ee9bf47-e2f0-e911-a812-000d3a5a1cf8",
+    "ironman_url": "https://www.ironman.com/races/im703-duisburg/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Durban",
+    "slug": "im703-durban",
+    "group_uuid": "05a02daa-99b0-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-durban/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Eagleman",
+    "slug": "im703-eagleman",
+    "group_uuid": "d26b290a-86fe-e111-aa75-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-eagleman/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Ecuador",
+    "slug": "im703-ecuador",
+    "group_uuid": "f53b55a5-16b2-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-ecuador/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Elsinore",
+    "slug": "im703-elsinore",
+    "group_uuid": "fec9c75b-55a5-e311-b5f4-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-elsinore/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Emilia Romagna",
+    "slug": "im703-emilia-romagna",
+    "group_uuid": "b3a04d8c-172a-e911-a972-000d3a36478d",
+    "ironman_url": "https://www.ironman.com/races/im703-emilia-romagna/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Encarnacion",
+    "slug": "im703-encarnacion",
+    "group_uuid": "28ec6dea-d2d5-425a-b5a1-5f589222c64e",
+    "ironman_url": "https://www.ironman.com/races/im703-encarnacion/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Erkner",
+    "slug": "im703-erkner",
+    "group_uuid": "25bc1a07-6985-434a-86ab-f7c867230491",
+    "ironman_url": "https://www.ironman.com/races/im703-erkner/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Florianopolis",
+    "slug": "im703-florianopolis",
+    "group_uuid": "0a2f9c3c-e1c3-e711-941b-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-florianopolis/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Florida",
+    "slug": "im703-florida",
+    "group_uuid": "5198aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-florida/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Fortaleza",
+    "slug": "im703-fortaleza",
+    "group_uuid": "68424bd6-3ed8-e611-9412-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-fortaleza/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Gdynia",
+    "slug": "im703-gdynia",
+    "group_uuid": "e1339090-3e7a-e411-93fc-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-gdynia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Geelong",
+    "slug": "im703-geelong",
+    "group_uuid": "3bff5ad1-f53b-e311-9ec7-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-geelong/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Goa",
+    "slug": "im703-goa",
+    "group_uuid": "a8a0c439-4cfd-e811-a968-000d3a3749bc",
+    "ironman_url": "https://www.ironman.com/races/im703-goa/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Goseong",
+    "slug": "im703-goseong",
+    "group_uuid": "80711e6b-fdca-e811-a96a-000d3a35f53a",
+    "ironman_url": "https://www.ironman.com/races/im703-goseong/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Greece",
+    "slug": "im703-greece",
+    "group_uuid": "372808eb-839a-4a2d-bf7c-d090eca0714f",
+    "ironman_url": "https://www.ironman.com/races/im703-greece/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Gulf Coast",
+    "slug": "im703-gulf-coast",
+    "group_uuid": "67d2be01-c0a2-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-gulf-coast/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Hawaii",
+    "slug": "im703-hawaii",
+    "group_uuid": "5398aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-hawaii/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Hengqin",
+    "slug": "im703-hengqin",
+    "group_uuid": "dd91f93e-fba6-43c1-b0f5-a8eb9d630a11",
+    "ironman_url": "https://www.ironman.com/races/im703-hengqin/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Hradec Kralove",
+    "slug": "im703-hradec-kralove",
+    "group_uuid": "87f1af8b-ceaf-4f25-a975-16e17e4f6de4",
+    "ironman_url": "https://www.ironman.com/races/im703-hradec-kralove/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Japan",
+    "slug": "im703-japan",
+    "group_uuid": "966a0110-9961-4dcf-bea0-4d9b97a3f7b3",
+    "ironman_url": "https://www.ironman.com/races/im703-japan/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Jonkoping",
+    "slug": "im703-jonkoping",
+    "group_uuid": "7f88d2cc-ea65-e511-9409-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-jonkoping/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Kenting",
+    "slug": "im703-kenting",
+    "group_uuid": "89d75720-a6a0-4985-a20d-5bcf468c99f6",
+    "ironman_url": "https://www.ironman.com/races/im703-kenting/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Knokke Heist",
+    "slug": "im703-knokke-heist",
+    "group_uuid": "9a8052e4-602f-4269-943f-5a40a28a9969",
+    "ironman_url": "https://www.ironman.com/races/im703-knokke-heist/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Kraichgau",
+    "slug": "im703-kraichgau",
+    "group_uuid": "7b9d72b1-f044-e411-93f8-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-kraichgau/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Krakow",
+    "slug": "im703-krakow",
+    "group_uuid": "2c2982fc-2c97-459d-b2ef-e77b92eecd4f",
+    "ironman_url": "https://www.ironman.com/races/im703-krakow/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 La Quinta",
+    "slug": "im703-la-quinta",
+    "group_uuid": "a581b0d5-23f2-e711-941c-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-la-quinta/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Langkawi",
+    "slug": "im703-langkawi",
+    "group_uuid": "f8e5a828-360b-e711-9414-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-langkawi/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Les Sables Dolonne",
+    "slug": "im703-les-sables-dolonne",
+    "group_uuid": "aa97b7b2-e4b1-e811-a96c-000d3a364086",
+    "ironman_url": "https://www.ironman.com/races/im703-les-sables-dolonne/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Los Cabos",
+    "slug": "im703-los-cabos",
+    "group_uuid": "a125f36e-a1be-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-los-cabos/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Louisville",
+    "slug": "im703-louisville",
+    "group_uuid": "17d618ca-6a56-4aae-bda6-7c221acdbb7c",
+    "ironman_url": "https://www.ironman.com/races/im703-louisville/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Luxembourg",
+    "slug": "im703-luxembourg",
+    "group_uuid": "39ac281d-1ed9-e211-af98-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-luxembourg/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Maine",
+    "slug": "im703-maine",
+    "group_uuid": "40494fab-1aa5-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-maine/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Mallorca",
+    "slug": "im703-mallorca",
+    "group_uuid": "5d98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-mallorca/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Melbourne",
+    "slug": "im703-melbourne",
+    "group_uuid": "ca57aaf3-5a31-ea11-a810-000d3a5a1477",
+    "ironman_url": "https://www.ironman.com/races/im703-melbourne/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Michigan",
+    "slug": "im703-michigan",
+    "group_uuid": "20ac93b1-5db7-e811-a967-000d3a37468c",
+    "ironman_url": "https://www.ironman.com/races/im703-michigan/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Mont Tremblant",
+    "slug": "im703-mont-tremblant",
+    "group_uuid": "5397aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-mont-tremblant/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Monterrey",
+    "slug": "im703-monterrey",
+    "group_uuid": "8ca744f9-e161-e311-8ba1-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-monterrey/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Mossel Bay",
+    "slug": "im703-mossel-bay",
+    "group_uuid": "c19dce8a-2f4b-460f-8816-f83f41f282b3",
+    "ironman_url": "https://www.ironman.com/races/im703-mossel-bay/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Muncie",
+    "slug": "im703-muncie",
+    "group_uuid": "6398aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-muncie/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Muskoka",
+    "slug": "im703-muskoka",
+    "group_uuid": "6598aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-muskoka/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Musselman",
+    "slug": "im703-musselman",
+    "group_uuid": "f8b84893-cabe-e911-a980-000d3a3749bc",
+    "ironman_url": "https://www.ironman.com/races/im703-musselman/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 New York",
+    "slug": "im703-new-york",
+    "group_uuid": "c7c8f92c-9cb1-4d76-9700-20c57ae28f17",
+    "ironman_url": "https://www.ironman.com/races/im703-new-york/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 New Zealand",
+    "slug": "im703-new-zealand",
+    "group_uuid": "f11b4433-9452-e711-9418-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-new-zealand/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Nice",
+    "slug": "im703-nice",
+    "group_uuid": "b40cebab-c4ad-e711-9419-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-nice/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 North Carolina",
+    "slug": "im703-north-carolina",
+    "group_uuid": "e4a5a6b8-0d92-e511-9409-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-north-carolina/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Oceanside",
+    "slug": "im703-oceanside",
+    "group_uuid": "4798aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-oceanside/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Ohio",
+    "slug": "im703-ohio",
+    "group_uuid": "0c4e3cef-3477-e511-9409-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-ohio/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Omaha",
+    "slug": "im703-omaha",
+    "group_uuid": "658da0ab-acc3-4eb5-a40b-6ccb8acde758",
+    "ironman_url": "https://www.ironman.com/races/im703-omaha/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Oman",
+    "slug": "im703-oman",
+    "group_uuid": "d56de758-0895-e811-9421-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-oman/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Oregon",
+    "slug": "im703-oregon",
+    "group_uuid": "a2bd7104-f82f-42f2-8943-1265d315a160",
+    "ironman_url": "https://www.ironman.com/races/im703-oregon/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Panama",
+    "slug": "im703-panama",
+    "group_uuid": "6b98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-panama/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Pennsylvania",
+    "slug": "im703-pennsylvania",
+    "group_uuid": "e916842d-32b7-4bce-884f-a8c5876dab16",
+    "ironman_url": "https://www.ironman.com/races/im703-pennsylvania/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Peru",
+    "slug": "im703-peru",
+    "group_uuid": "12f25db3-5f74-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-peru/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Phu Quoc",
+    "slug": "im703-phu-quoc",
+    "group_uuid": "854fec6c-e9e0-47a0-a9f9-855f9313cbc1",
+    "ironman_url": "https://www.ironman.com/races/im703-phu-quoc/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Port Macquarie",
+    "slug": "im703-port-macquarie",
+    "group_uuid": "7398aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-port-macquarie/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Poznan",
+    "slug": "im703-poznan",
+    "group_uuid": "5a9a5b9c-f4ff-4dd5-9b1d-11b3379c427f",
+    "ironman_url": "https://www.ironman.com/races/im703-poznan/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Pucon",
+    "slug": "im703-pucon",
+    "group_uuid": "8397aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-pucon/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Puerto Princesa",
+    "slug": "im703-puerto-princesa",
+    "group_uuid": "befc8af5-8303-436a-a7d1-2531e3218268",
+    "ironman_url": "https://www.ironman.com/races/im703-puerto-princesa/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Puerto Rico",
+    "slug": "im703-puerto-rico",
+    "group_uuid": "7b98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-puerto-rico/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Puerto Varas",
+    "slug": "im703-puerto-varas",
+    "group_uuid": "6d237b44-865b-4cb3-bf95-e30f21b7c3f8",
+    "ironman_url": "https://www.ironman.com/races/im703-puerto-varas/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Punta Del Este",
+    "slug": "im703-punta-del-este",
+    "group_uuid": "1ed3ce8d-47bc-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-punta-del-este/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Rio De Janeiro",
+    "slug": "im703-rio-de-janeiro",
+    "group_uuid": "a683daa8-c30e-e511-9401-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-rio-de-janeiro/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Rockford Illinois",
+    "slug": "im703-rockford-illinois",
+    "group_uuid": "94699a00-6f45-4a4c-ad00-fdd7d274c95b",
+    "ironman_url": "https://www.ironman.com/races/im703-rockford-illinois/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Rwanda",
+    "slug": "im703-rwanda",
+    "group_uuid": "5f9e8cd3-1e05-4d4b-953a-f2596a6d8f44",
+    "ironman_url": "https://www.ironman.com/races/im703-rwanda/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 San Juan",
+    "slug": "im703-san-juan",
+    "group_uuid": "a926121d-f2bf-428b-98d9-8574b4a7befd",
+    "ironman_url": "https://www.ironman.com/races/im703-san-juan/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 San Salvador",
+    "slug": "im703-san-salvador",
+    "group_uuid": "376e9b13-e4d4-440c-a92e-00eeccbcda0d",
+    "ironman_url": "https://www.ironman.com/races/im703-san-salvador/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Santa Cruz",
+    "slug": "im703-santa-cruz",
+    "group_uuid": "76fcef91-46b1-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-santa-cruz/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Sao Paulo",
+    "slug": "im703-sao-paulo",
+    "group_uuid": "2736dce6-7e49-e911-a979-000d3a35f53a",
+    "ironman_url": "https://www.ironman.com/races/im703-sao-paulo/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Shanghai Chongming",
+    "slug": "im703-shanghai-chongming",
+    "group_uuid": "94dd54fc-db4f-e811-941e-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-shanghai-chongming/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Subic Bay Philippines",
+    "slug": "im703-subic-bay-philippines",
+    "group_uuid": "30c4b1f7-08b2-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-subic-bay-philippines/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Sunshine Coast",
+    "slug": "im703-sunshine-coast",
+    "group_uuid": "be8a13c2-88a0-e211-870b-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-sunshine-coast/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Swansea",
+    "slug": "im703-swansea",
+    "group_uuid": "7f9774c3-b171-4a38-a2ee-afb15573054a",
+    "ironman_url": "https://www.ironman.com/races/im703-swansea/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Switzerland",
+    "slug": "im703-switzerland",
+    "group_uuid": "8998aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-switzerland/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Tallinn",
+    "slug": "im703-tallinn",
+    "group_uuid": "f3f8d4fc-0e48-420a-a50e-6e749b5ce83b",
+    "ironman_url": "https://www.ironman.com/races/im703-tallinn/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Texas",
+    "slug": "im703-texas",
+    "group_uuid": "8f98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-texas/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Tours",
+    "slug": "im703-tours",
+    "group_uuid": "c795d5c4-a4ef-40cb-846e-9889cdb6ef12",
+    "ironman_url": "https://www.ironman.com/races/im703-tours/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Turkey",
+    "slug": "im703-turkey",
+    "group_uuid": "3a513a94-c15e-e411-93fa-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-turkey/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Valdivia",
+    "slug": "im703-valdivia",
+    "group_uuid": "69e17fbc-46a5-40c4-a982-727831a0aa3a",
+    "ironman_url": "https://www.ironman.com/races/im703-valdivia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Valencia",
+    "slug": "im703-valencia",
+    "group_uuid": "51314bcd-4b2f-450e-b1f6-fb0dc6c5f609",
+    "ironman_url": "https://www.ironman.com/races/im703-valencia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Venice Jesolo",
+    "slug": "im703-venice-jesolo",
+    "group_uuid": "9f68d6b4-c2fc-4082-ac82-b096b6890cb3",
+    "ironman_url": "https://www.ironman.com/races/im703-venice-jesolo/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Vichy",
+    "slug": "im703-vichy",
+    "group_uuid": "4db33a98-76a5-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-vichy/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Victoria",
+    "slug": "im703-victoria",
+    "group_uuid": "4d5414be-32d2-e311-b4c2-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-victoria/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Waco",
+    "slug": "im703-waco",
+    "group_uuid": "ed0ed7f4-3fca-e711-941b-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-waco/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Warsaw",
+    "slug": "im703-warsaw",
+    "group_uuid": "b323092a-adef-4ffc-a093-ce89b8aed598",
+    "ironman_url": "https://www.ironman.com/races/im703-warsaw/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Washington Tri Cities",
+    "slug": "im703-washington-tri-cities",
+    "group_uuid": "cd32ce29-af1d-ea11-a811-000d3a5a1f86",
+    "ironman_url": "https://www.ironman.com/races/im703-washington-tri-cities/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Western Australia",
+    "slug": "im703-western-australia",
+    "group_uuid": "2c376cf3-2149-e611-940f-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-western-australia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Western Massachusetts",
+    "slug": "im703-western-massachusetts",
+    "group_uuid": "bf860cb8-4efc-49f5-90f3-7e8d8ac13f18",
+    "ironman_url": "https://www.ironman.com/races/im703-western-massachusetts/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Western Sydney",
+    "slug": "im703-western-sydney",
+    "group_uuid": "39894f5e-25a6-e311-b5f4-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-western-sydney/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Westfriesland",
+    "slug": "im703-westfriesland",
+    "group_uuid": "67d2b761-0eae-e911-a981-000d3a36478d",
+    "ironman_url": "https://www.ironman.com/races/im703-westfriesland/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Weymouth",
+    "slug": "im703-weymouth",
+    "group_uuid": "9da9ce3f-1c7f-e511-9409-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-weymouth/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Wisconsin",
+    "slug": "im703-wisconsin",
+    "group_uuid": "adaedbb8-6095-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im703-wisconsin/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 World Championship 2026",
+    "slug": "im703-world-championship-2026",
+    "group_uuid": "9798aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-world-championship-2026/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN 70.3 Zell Am See",
+    "slug": "im703-zell-am-see",
+    "group_uuid": "9d98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im703-zell-am-see/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Australia",
+    "slug": "im-australia",
+    "group_uuid": "a598aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-australia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Austria",
+    "slug": "im-austria",
+    "group_uuid": "e6b03b63-dbb0-e111-80ae-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-austria/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Barcelona",
+    "slug": "im-barcelona",
+    "group_uuid": "c413f2e7-2dca-e311-b5f4-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-barcelona/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Brazil",
+    "slug": "im-brazil",
+    "group_uuid": "a798aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-brazil/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Cairns",
+    "slug": "im-cairns",
+    "group_uuid": "6a6e11d2-86fe-e111-aa75-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-cairns/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN California",
+    "slug": "im-california",
+    "group_uuid": "d74670f6-7fb2-4813-96e1-fae4ab1b948c",
+    "ironman_url": "https://www.ironman.com/races/im-california/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Canada Ottawa",
+    "slug": "im-canada-ottawa",
+    "group_uuid": "b8e35e3d-f89a-4545-86e8-327e1a93ff93",
+    "ironman_url": "https://www.ironman.com/races/im-canada-ottawa/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Cascais",
+    "slug": "im-cascais",
+    "group_uuid": "4a7d66f0-94f5-e911-a812-000d3a5a1cf8",
+    "ironman_url": "https://www.ironman.com/races/im-cascais/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Chattanooga",
+    "slug": "im-chattanooga",
+    "group_uuid": "0a742931-cf10-e311-9ec7-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-chattanooga/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Copenhagen",
+    "slug": "im-copenhagen",
+    "group_uuid": "6b909a24-f40f-e311-9ec7-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-copenhagen/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Cozumel",
+    "slug": "im-cozumel",
+    "group_uuid": "b398aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-cozumel/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Emilia Romagna",
+    "slug": "im-emilia-romagna",
+    "group_uuid": "aa3f9693-bd9a-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im-emilia-romagna/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Florida",
+    "slug": "im-florida",
+    "group_uuid": "b998aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-florida/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN France",
+    "slug": "im-france",
+    "group_uuid": "bb98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-france/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Frankfurt",
+    "slug": "im-frankfurt",
+    "group_uuid": "b798aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-frankfurt/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Gurye",
+    "slug": "im-gurye",
+    "group_uuid": "6e0f4c83-40d8-e611-9412-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im-gurye/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Hamburg",
+    "slug": "im-hamburg",
+    "group_uuid": "0ed71b3d-6974-e611-9410-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im-hamburg/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Jacksonville",
+    "slug": "im-jacksonville",
+    "group_uuid": "22798972-556d-4588-8100-cec96e73a60a",
+    "ironman_url": "https://www.ironman.com/races/im-jacksonville/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Kalmar",
+    "slug": "im-kalmar",
+    "group_uuid": "bd98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-kalmar/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Lake Placid",
+    "slug": "im-lake-placid",
+    "group_uuid": "c398aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-lake-placid/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Lanzarote",
+    "slug": "im-lanzarote",
+    "group_uuid": "c598aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-lanzarote/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Leeds",
+    "slug": "im-leeds",
+    "group_uuid": "ab1297a2-42d5-4b6f-b408-23ae319f5a31",
+    "ironman_url": "https://www.ironman.com/races/im-leeds/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Les Sables Dolonne",
+    "slug": "im-les-sables-dolonne",
+    "group_uuid": "f377736f-9933-4b8b-8734-a920dbe4b699",
+    "ironman_url": "https://www.ironman.com/races/im-les-sables-dolonne/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Malaysia",
+    "slug": "im-malaysia",
+    "group_uuid": "c998aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-malaysia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Maryland",
+    "slug": "im-maryland",
+    "group_uuid": "52f9c915-31ca-e311-b5f4-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-maryland/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN New Zealand",
+    "slug": "im-new-zealand",
+    "group_uuid": "cd98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-new-zealand/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Penghu",
+    "slug": "im-penghu",
+    "group_uuid": "8b4e50b2-04b2-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im-penghu/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Philippines",
+    "slug": "im-philippines",
+    "group_uuid": "d4969272-cc61-e711-9418-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im-philippines/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN South Africa",
+    "slug": "im-south-africa",
+    "group_uuid": "60accc34-83fe-e111-aa75-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-south-africa/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN South Hokkaido",
+    "slug": "im-south-hokkaido",
+    "group_uuid": "4cdb1049-4f27-4e32-b49d-4fc9ca73c2fb",
+    "ironman_url": "https://www.ironman.com/races/im-south-hokkaido/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Switzerland",
+    "slug": "im-switzerland",
+    "group_uuid": "d90fba34-21ae-e911-a986-000d3a364086",
+    "ironman_url": "https://www.ironman.com/races/im-switzerland/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Tallinn",
+    "slug": "im-tallinn",
+    "group_uuid": "37760ed4-c881-e711-9418-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im-tallinn/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Texas",
+    "slug": "im-texas",
+    "group_uuid": "d998aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-texas/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Tours",
+    "slug": "im-tours",
+    "group_uuid": "22bf0d47-a1a2-46dd-8a09-a24bec7b5dcb",
+    "ironman_url": "https://www.ironman.com/races/im-tours/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Vichy",
+    "slug": "im-vichy",
+    "group_uuid": "17972a3a-75a5-e411-9400-005056951bf1",
+    "ironman_url": "https://www.ironman.com/races/im-vichy/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Vietnam",
+    "slug": "im-vietnam",
+    "group_uuid": "fd59deff-1ab9-41dc-8b31-a1bda1f248a8",
+    "ironman_url": "https://www.ironman.com/races/im-vietnam/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Vitoria",
+    "slug": "im-vitoria",
+    "group_uuid": "47f47b8c-71ba-e811-a967-000d3a37468c",
+    "ironman_url": "https://www.ironman.com/races/im-vitoria/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Wales",
+    "slug": "im-wales",
+    "group_uuid": "df98aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-wales/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Western Australia",
+    "slug": "im-western-australia",
+    "group_uuid": "e198aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-western-australia/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN Wisconsin",
+    "slug": "im-wisconsin",
+    "group_uuid": "e598aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-wisconsin/results",
+    "subevents": []
+  },
+  {
+    "race_name": "IRONMAN World Championship Kona",
+    "slug": "im-world-championship-kona",
+    "group_uuid": "e798aa20-f278-e111-b16a-005056956277",
+    "ironman_url": "https://www.ironman.com/races/im-world-championship-kona/results",
+    "subevents": []
+  }
+]
