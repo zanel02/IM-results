@@ -5,11 +5,9 @@ Historical Ironman triathlon results dashboard. Scrapes data from the WTC/Compet
 ## Setup
 
 ```bash
-pip install streamlit pandas numpy --index-url https://pypi.org/simple/
+pip install streamlit pandas numpy
 python3 storage.py init
 ```
-
-> **Note (Remitly machines):** Remitly's CodeArtifact proxy blocks public PyPI. Always pass `--index-url https://pypi.org/simple/` to `pip install`.
 
 ## Running the dashboard
 
