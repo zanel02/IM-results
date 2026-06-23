@@ -39,6 +39,38 @@ def load_results(race_id: int) -> pd.DataFrame:
 
 
 @st.cache_data
+def search_athletes(query: str) -> pd.DataFrame:
+    """Return distinct athlete names matching a partial, case-insensitive query."""
+    return pd.read_sql(
+        """SELECT DISTINCT athlete_name
+           FROM results
+           WHERE lower(athlete_name) LIKE lower(?)
+           ORDER BY athlete_name
+           LIMIT 50""",
+        get_conn(),
+        params=(f"%{query}%",),
+    )
+
+
+@st.cache_data
+def load_athlete_results(athlete_name: str) -> pd.DataFrame:
+    """All results for a specific athlete across every race in the DB."""
+    return pd.read_sql(
+        """SELECT res.status, res.age_group, res.gender,
+                  res.swim_fmt, res.t1_fmt, res.bike_fmt, res.t2_fmt, res.run_fmt, res.finish_fmt,
+                  res.finish_secs, res.swim_secs, res.bike_secs, res.run_secs,
+                  res.rank_overall, res.rank_gender, res.rank_division,
+                  r.event_name, r.year, r.distance_type, r.event_date
+           FROM results res
+           JOIN races r ON res.race_id = r.id
+           WHERE res.athlete_name = ?
+           ORDER BY r.year DESC, r.event_date DESC""",
+        get_conn(),
+        params=(athlete_name,),
+    )
+
+
+@st.cache_data
 def load_series_results(group_uuid: str) -> pd.DataFrame:
     return pd.read_sql(
         """SELECT res.*, r.year
@@ -97,7 +129,7 @@ series_df["clean_name"] = series_df["series_name"].str.replace(r"^\d{4}\s+", "",
 # ── tabs ──────────────────────────────────────────────────────────────────────
 
 st.title("Ironman Results")
-tab1, tab2 = st.tabs(["Race Results", "Year-over-Year Comparison"])
+tab1, tab2, tab3 = st.tabs(["Race Results", "Year-over-Year Comparison", "Athlete Search"])
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -346,3 +378,79 @@ with tab2:
             )
             median_mins = (medians / 60).rename("Median (min)")
             st.bar_chart(median_mins, height=260, use_container_width=True)
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 3 — athlete search
+# ══════════════════════════════════════════════════════════════════════════════
+
+with tab3:
+    st.subheader("Athlete Search")
+    query = st.text_input("Search by name", placeholder="e.g. Smith, Jane")
+
+    if not query:
+        st.caption("Enter a name to search across all races in the database.")
+        st.stop()
+
+    matches = search_athletes(query)
+
+    if matches.empty:
+        st.warning(f'No athletes found matching "{query}".')
+        st.stop()
+
+    athlete_names = matches["athlete_name"].tolist()
+    if len(athlete_names) == 1:
+        selected_athlete = athlete_names[0]
+    else:
+        selected_athlete = st.selectbox(
+            f"{len(athlete_names)} athletes found — select one",
+            athlete_names,
+        )
+
+    st.divider()
+
+    df_athlete = load_athlete_results(selected_athlete)
+
+    if df_athlete.empty:
+        st.info("No results found for this athlete.")
+        st.stop()
+
+    st.header(selected_athlete)
+
+    finishes = df_athlete[df_athlete["status"] == "FIN"]
+    c1, c2, c3 = st.columns(3)
+    c1.metric("Races in DB", len(df_athlete))
+    c2.metric("Finishes", len(finishes))
+    c3.metric("Best Finish", fmt_time(finishes["finish_secs"].min()) if not finishes.empty else "—")
+
+    st.divider()
+
+    display = pd.DataFrame({
+        "Year":       df_athlete["year"],
+        "Race":       df_athlete["event_name"],
+        "Distance":   df_athlete["distance_type"],
+        "Age Group":  df_athlete["age_group"],
+        "Status":     df_athlete["status"],
+        "Swim":       df_athlete["swim_fmt"],
+        "T1":         df_athlete["t1_fmt"],
+        "Bike":       df_athlete["bike_fmt"],
+        "T2":         df_athlete["t2_fmt"],
+        "Run":        df_athlete["run_fmt"],
+        "Finish":     df_athlete["finish_fmt"],
+        "Overall":    df_athlete["rank_overall"].astype("Int64"),
+        "Gender":     df_athlete["rank_gender"].astype("Int64"),
+        "Division":   df_athlete["rank_division"].astype("Int64"),
+    })
+    st.dataframe(display, use_container_width=True, hide_index=True)
+
+    if len(finishes) > 1:
+        st.divider()
+        st.subheader("Finish Time Over Time")
+        chart_df = (
+            finishes[["year", "finish_secs", "event_name"]]
+            .sort_values("year")
+            .assign(finish_mins=lambda d: d["finish_secs"] / 60)
+            .set_index("year")[["finish_mins"]]
+            .rename(columns={"finish_mins": "Finish (min)"})
+        )
+        st.line_chart(chart_df, height=260, use_container_width=True)
