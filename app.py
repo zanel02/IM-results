@@ -1,5 +1,4 @@
 import json
-import math
 import sqlite3
 from pathlib import Path
 
@@ -125,61 +124,11 @@ def fmt_time(secs) -> str:
     return f"{h}:{m:02d}:{s:02d}" if h else f"{m}:{s:02d}"
 
 
-_DIR_TO_DEG: dict[str, int] = {
-    "N": 0, "NE": 45, "E": 90, "SE": 135,
-    "S": 180, "SW": 225, "W": 270, "NW": 315,
+# Unicode arrows showing direction wind is blowing toward (standard meteorological sense)
+_DIR_ARROW: dict[str, str] = {
+    "N": "↓", "NE": "↙", "E": "←", "SE": "↖",
+    "S": "↑", "SW": "↗", "W": "→", "NW": "↘",
 }
-
-
-def _wind_compass_svg(hourly: list, avg_mph: float) -> str:
-    """Return an inline SVG compass rose showing vector-averaged wind direction."""
-    valid = [
-        (h.get("wind_mph") or 0, _DIR_TO_DEG[h["wind_dir"]])
-        for h in hourly
-        if h.get("wind_dir") in _DIR_TO_DEG
-    ]
-    if not valid:
-        return (
-            f'<div style="text-align:center;padding-top:24px;color:#888;font-size:13px">'
-            f'{avg_mph:.0f} mph<br>dir unknown</div>'
-        )
-
-    w_sin = sum(s * math.sin(math.radians(d)) for s, d in valid)
-    w_cos = sum(s * math.cos(math.radians(d)) for s, d in valid)
-    from_deg = math.degrees(math.atan2(w_sin, w_cos)) % 360
-
-    _COMPASS = ["N", "NE", "E", "SE", "S", "SW", "W", "NW"]
-    from_label = _COMPASS[round(from_deg / 45) % 8]
-
-    # Arrow points toward where wind is going
-    toward_deg = (from_deg + 180) % 360
-    rad = math.radians(toward_deg - 90)
-
-    cx, cy, r = 85, 82, 56
-    tip_x  = cx + r * 0.80 * math.cos(rad)
-    tip_y  = cy + r * 0.80 * math.sin(rad)
-    tail_x = cx - r * 0.45 * math.cos(rad)
-    tail_y = cy - r * 0.45 * math.sin(rad)
-    ah = 9
-    lx = tip_x + ah * math.cos(rad + math.pi * 0.75)
-    ly = tip_y + ah * math.sin(rad + math.pi * 0.75)
-    rx = tip_x + ah * math.cos(rad - math.pi * 0.75)
-    ry = tip_y + ah * math.sin(rad - math.pi * 0.75)
-
-    return (
-        '<div style="text-align:center;padding-top:4px">'
-        f'<svg width="170" height="190" xmlns="http://www.w3.org/2000/svg">'
-        f'<circle cx="{cx}" cy="{cy}" r="{r}" fill="none" stroke="#555" stroke-width="1.5"/>'
-        f'<text x="{cx}" y="{cy-r-6}" text-anchor="middle" font-size="12" fill="#888" font-family="sans-serif">N</text>'
-        f'<text x="{cx}" y="{cy+r+15}" text-anchor="middle" font-size="12" fill="#888" font-family="sans-serif">S</text>'
-        f'<text x="{cx+r+10}" y="{cy+5}" text-anchor="middle" font-size="12" fill="#888" font-family="sans-serif">E</text>'
-        f'<text x="{cx-r-10}" y="{cy+5}" text-anchor="middle" font-size="12" fill="#888" font-family="sans-serif">W</text>'
-        f'<line x1="{tail_x:.1f}" y1="{tail_y:.1f}" x2="{tip_x:.1f}" y2="{tip_y:.1f}" stroke="#60a5fa" stroke-width="3" stroke-linecap="round"/>'
-        f'<polygon points="{tip_x:.1f},{tip_y:.1f} {lx:.1f},{ly:.1f} {rx:.1f},{ry:.1f}" fill="#60a5fa"/>'
-        f'<text x="{cx}" y="{cy+r+38}" text-anchor="middle" font-size="15" font-weight="600" fill="#888" font-family="sans-serif">{avg_mph:.0f} mph</text>'
-        f'<text x="{cx}" y="{cy+r+56}" text-anchor="middle" font-size="11" fill="#aaa" font-family="sans-serif">from {from_label}</text>'
-        '</svg></div>'
-    )
 
 
 def time_histogram(series: pd.Series, bin_minutes: int) -> pd.DataFrame:
@@ -290,50 +239,63 @@ with tab1:
 
             hourly = weather["hourly"]
             hourly_df = pd.DataFrame(hourly)
+            hourly_df["wind_arrow"] = hourly_df["wind_dir"].map(_DIR_ARROW).fillna("·")
 
-            chart_col, wind_col = st.columns([4, 1])
-            with chart_col:
-                base = alt.Chart(hourly_df).encode(
-                    x=alt.X("hour:O", title="", axis=alt.Axis(labelAngle=0))
-                )
-                temp_layer = base.mark_line(
-                    color="#f97316", strokeWidth=2.5,
-                    point=alt.OverlayMarkDef(color="#f97316", size=40),
-                ).encode(
-                    y=alt.Y(
-                        "temp_f:Q", title="Temperature (°F)",
-                        scale=alt.Scale(zero=False),
-                        axis=alt.Axis(titleColor="#f97316"),
-                    ),
-                    tooltip=[
-                        alt.Tooltip("hour:O", title="Hour"),
-                        alt.Tooltip("temp_f:Q", title="Temp (°F)", format=".1f"),
-                        alt.Tooltip("humidity:Q", title="Humidity (%)"),
-                        alt.Tooltip("conditions:N", title="Conditions"),
-                    ],
-                )
-                precip_layer = base.mark_bar(color="#60a5fa", opacity=0.7).encode(
-                    y=alt.Y(
-                        "precip_in:Q", title="Precip (in)",
-                        axis=alt.Axis(titleColor="#60a5fa"),
-                    ),
-                    tooltip=[
-                        alt.Tooltip("hour:O", title="Hour"),
-                        alt.Tooltip("precip_in:Q", title="Precip (in)", format=".3f"),
-                    ],
-                )
-                st.altair_chart(
-                    alt.layer(precip_layer, temp_layer)
-                    .resolve_scale(y="independent")
-                    .properties(height=220),
-                    use_container_width=True,
-                )
+            x_enc = alt.X("hour:O", title="", axis=alt.Axis(labelAngle=0))
 
-            with wind_col:
-                st.markdown(
-                    _wind_compass_svg(hourly, weather.get("avg_wind_mph") or 0),
-                    unsafe_allow_html=True,
-                )
+            temp_chart = alt.Chart(hourly_df).mark_line(
+                color="#f97316", strokeWidth=2.5,
+                point=alt.OverlayMarkDef(color="#f97316", size=40),
+            ).encode(
+                x=x_enc,
+                y=alt.Y(
+                    "temp_f:Q", title="Temperature (°F)",
+                    scale=alt.Scale(zero=False),
+                    axis=alt.Axis(titleColor="#f97316"),
+                ),
+                tooltip=[
+                    alt.Tooltip("hour:O", title="Hour"),
+                    alt.Tooltip("temp_f:Q", title="Temp (°F)", format=".1f"),
+                    alt.Tooltip("humidity:Q", title="Humidity (%)"),
+                    alt.Tooltip("conditions:N", title="Conditions"),
+                ],
+            ).properties(height=180)
+            st.altair_chart(temp_chart, use_container_width=True)
+
+            precip_chart = alt.Chart(hourly_df).mark_bar(
+                color="#60a5fa", opacity=0.85,
+            ).encode(
+                x=x_enc,
+                y=alt.Y(
+                    "precip_in:Q", title="Precip (in)",
+                    axis=alt.Axis(titleColor="#60a5fa"),
+                ),
+                tooltip=[
+                    alt.Tooltip("hour:O", title="Hour"),
+                    alt.Tooltip("precip_in:Q", title="Precip (in)", format=".3f"),
+                ],
+            ).properties(height=120)
+            st.altair_chart(precip_chart, use_container_width=True)
+
+            wind_base = alt.Chart(hourly_df).encode(
+                x=alt.X("hour:O", title="", axis=alt.Axis(labelAngle=0))
+            )
+            wind_bars = wind_base.mark_bar(color="#94a3b8", opacity=0.85).encode(
+                y=alt.Y("wind_mph:Q", title="Wind (mph)"),
+                tooltip=[
+                    alt.Tooltip("hour:O", title="Hour"),
+                    alt.Tooltip("wind_mph:Q", title="Speed (mph)", format=".1f"),
+                    alt.Tooltip("wind_dir:N", title="From direction"),
+                ],
+            )
+            wind_arrows = wind_base.mark_text(dy=-12, fontSize=15, color="#cbd5e1").encode(
+                y=alt.Y("wind_mph:Q"),
+                text=alt.Text("wind_arrow:N"),
+            )
+            st.altair_chart(
+                alt.layer(wind_bars, wind_arrows).properties(height=140),
+                use_container_width=True,
+            )
 
     st.divider()
 
