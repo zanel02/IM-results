@@ -29,7 +29,7 @@ def fetch(url: str) -> str | bytes:
         return r.read().decode("utf-8")
 
 
-def fetch_group(group_uuid: str) -> None:
+def fetch_group(group_uuid: str, skip_weather: bool = False) -> None:
     print(f"\n── {group_uuid}")
 
     # 1. Register the group (download HTML, parse __NEXT_DATA__, upsert races)
@@ -56,6 +56,9 @@ def fetch_group(group_uuid: str) -> None:
             print(f"  Saved {count} results.")
             time.sleep(0.5)
 
+    if skip_weather:
+        return
+
     # 4. Fetch weather for all group races with results but no weather yet
     # Re-query so newly-fetched races show fetched=True
     all_races = list_races()
@@ -70,14 +73,18 @@ def fetch_group(group_uuid: str) -> None:
                 fetch_and_save_weather(race["id"], race["event_name"], race["event_date"])
             except Exception as exc:
                 print(f"  Warning: weather fetch failed for {race['event_name']} — {exc}")
-            time.sleep(1.0)
+            time.sleep(2.0)
 
 
 if __name__ == "__main__":
-    if len(sys.argv) < 2:
+    args = sys.argv[1:]
+    skip_weather = "--no-weather" in args
+    uuids = [a for a in args if not a.startswith("--")]
+
+    if not uuids:
         print(__doc__)
         sys.exit(1)
 
     init_db()
-    for uuid in sys.argv[1:]:
-        fetch_group(uuid.strip())
+    for uuid in uuids:
+        fetch_group(uuid.strip(), skip_weather=skip_weather)

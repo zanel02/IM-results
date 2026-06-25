@@ -103,6 +103,29 @@ One row per athlete per race. Populated by `storage.py ingest`.
 
 ---
 
+### `race_weather`
+
+One row per race. Populated by `weather.py` via `fetch.py` after results are ingested.
+
+| Column | Type | Notes |
+|---|---|---|
+| `id` | INTEGER PK | Auto-increment |
+| `race_id` | INTEGER UNIQUE FK → `races.id` | One weather row per race |
+| `fetched_at` | TEXT | ISO 8601 UTC timestamp |
+| `venue_lat` | REAL | Geocoded latitude (from OpenStreetMap Nominatim) |
+| `venue_lon` | REAL | Geocoded longitude |
+| `timezone` | TEXT | IANA timezone string inferred by Open-Meteo, e.g. `"America/Los_Angeles"` |
+| `hourly_json` | TEXT | JSON array of hourly conditions from 6 am–6 pm local time. Each element: `{"hour": "07:00", "temp_f": 62.1, "humidity": 74, "wind_mph": 8.2, "wind_dir": "SW", "precip_in": 0.0, "conditions": "Clear"}` |
+| `temp_f_7am` | REAL | Temperature at 7 am — used as a summary column for Tab 2 |
+| `temp_f_high` | REAL | High temperature across the race window |
+| `total_precip_in` | REAL | Total precipitation (inches) across the race window |
+| `avg_wind_mph` | REAL | Average wind speed across the race window |
+
+**Conditions** are derived from WMO weather codes: Clear, Partly Cloudy, Cloudy, Drizzle, Rain, or Thunderstorm.  
+**Wind direction** is converted from degrees to 8-point compass (N, NE, E, SE, S, SW, W, NW).
+
+---
+
 ## Indexes
 
 ```sql

@@ -11,6 +11,7 @@ build/
 data/ironman.db
 data/ironman.db-shm
 data/ironman.db-wal
+results.db
 
 # IDE
 .idea/
