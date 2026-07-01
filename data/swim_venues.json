@@ -1,0 +1,210 @@
+{
+  "_note": "Swim venue data for full IRONMAN races. type: river | lake | reservoir | ocean. venue_name is the specific body of water.",
+  "races": {
+    "IRONMAN Australia": {
+      "venue_name": "Hastings River",
+      "type": "river",
+      "location": "Port Macquarie, NSW, Australia"
+    },
+    "IRONMAN Brazil": {
+      "venue_name": "Atlantic Ocean",
+      "type": "ocean",
+      "location": "Florianópolis, Brazil"
+    },
+    "IRONMAN Cairns": {
+      "venue_name": "Trinity Inlet",
+      "type": "ocean",
+      "location": "Cairns, Queensland, Australia"
+    },
+    "IRONMAN Calella-Barcelona": {
+      "venue_name": "Mediterranean Sea",
+      "type": "ocean",
+      "location": "Calella, Spain"
+    },
+    "IRONMAN California": {
+      "venue_name": "American River",
+      "type": "river",
+      "location": "Sacramento, California, USA"
+    },
+    "IRONMAN Canada-Ottawa": {
+      "venue_name": "Ottawa River",
+      "type": "river",
+      "location": "Ottawa, Ontario, Canada"
+    },
+    "IRONMAN Chattanooga": {
+      "venue_name": "Tennessee River",
+      "type": "river",
+      "location": "Chattanooga, Tennessee, USA"
+    },
+    "IRONMAN Copenhagen": {
+      "venue_name": "Copenhagen Harbour",
+      "type": "ocean",
+      "location": "Copenhagen, Denmark"
+    },
+    "IRONMAN Cozumel": {
+      "venue_name": "Caribbean Sea",
+      "type": "ocean",
+      "location": "Cozumel, Mexico"
+    },
+    "IRONMAN Emilia Romagna": {
+      "venue_name": "Adriatic Sea",
+      "type": "ocean",
+      "location": "Cervia, Italy"
+    },
+    "IRONMAN Florida": {
+      "venue_name": "Gulf of Mexico",
+      "type": "ocean",
+      "location": "Panama City Beach, Florida, USA"
+    },
+    "IRONMAN France Nice": {
+      "venue_name": "Mediterranean Sea",
+      "type": "ocean",
+      "location": "Nice, France"
+    },
+    "IRONMAN Frankfurt": {
+      "venue_name": "Langener Waldsee",
+      "type": "lake",
+      "location": "Frankfurt, Germany"
+    },
+    "IRONMAN Gurye Korea": {
+      "venue_name": "Jirisan Lake",
+      "type": "lake",
+      "location": "Gurye, South Korea"
+    },
+    "IRONMAN Hamburg": {
+      "venue_name": "Außenalster",
+      "type": "lake",
+      "location": "Hamburg, Germany"
+    },
+    "IRONMAN Jacksonville": {
+      "venue_name": "St. Johns River",
+      "type": "river",
+      "location": "Jacksonville, Florida, USA"
+    },
+    "IRONMAN Japan South Hokkaido": {
+      "venue_name": "Hakodate Bay",
+      "type": "ocean",
+      "location": "Kikonai, Hokkaido, Japan"
+    },
+    "IRONMAN Kaernten-Klagenfurt, Austria": {
+      "venue_name": "Wörthersee",
+      "type": "lake",
+      "location": "Klagenfurt, Austria"
+    },
+    "IRONMAN Kalmar-Sweden": {
+      "venue_name": "Kalmarsund",
+      "type": "ocean",
+      "location": "Kalmar, Sweden"
+    },
+    "IRONMAN Lake Placid": {
+      "venue_name": "Mirror Lake",
+      "type": "lake",
+      "location": "Lake Placid, New York, USA"
+    },
+    "IRONMAN Lanzarote": {
+      "venue_name": "Atlantic Ocean",
+      "type": "ocean",
+      "location": "Puerto del Carmen, Lanzarote, Spain"
+    },
+    "IRONMAN Leeds": {
+      "venue_name": "Waterloo Lake",
+      "type": "reservoir",
+      "location": "Roundhay Park, Leeds, UK"
+    },
+    "IRONMAN Les Sables d'Olonne-Vendee": {
+      "venue_name": "Atlantic Ocean",
+      "type": "ocean",
+      "location": "Les Sables-d'Olonne, France"
+    },
+    "IRONMAN Malaysia": {
+      "venue_name": "South China Sea",
+      "type": "ocean",
+      "location": "Langkawi, Malaysia"
+    },
+    "IRONMAN Maryland": {
+      "venue_name": "Choptank River",
+      "type": "river",
+      "location": "Cambridge, Maryland, USA"
+    },
+    "IRONMAN New Zealand": {
+      "venue_name": "Lake Taupo",
+      "type": "lake",
+      "location": "Taupo, New Zealand"
+    },
+    "IRONMAN Penghu": {
+      "venue_name": "Taiwan Strait",
+      "type": "ocean",
+      "location": "Penghu Islands, Taiwan"
+    },
+    "IRONMAN Portugal-Cascais": {
+      "venue_name": "Atlantic Ocean",
+      "type": "ocean",
+      "location": "Cascais, Portugal"
+    },
+    "IRONMAN South Africa": {
+      "venue_name": "Indian Ocean",
+      "type": "ocean",
+      "location": "East London, South Africa"
+    },
+    "IRONMAN Subic Bay Philippines": {
+      "venue_name": "Subic Bay",
+      "type": "ocean",
+      "location": "Subic Bay, Philippines"
+    },
+    "IRONMAN Switzerland Thun": {
+      "venue_name": "Lake Thun",
+      "type": "lake",
+      "location": "Thun, Switzerland"
+    },
+    "IRONMAN Tallinn": {
+      "venue_name": "Gulf of Finland",
+      "type": "ocean",
+      "location": "Tallinn, Estonia"
+    },
+    "IRONMAN Texas": {
+      "venue_name": "Lake Woodlands",
+      "type": "lake",
+      "location": "The Woodlands, Texas, USA"
+    },
+    "IRONMAN Tours Metropole - Loire Valley": {
+      "venue_name": "Loire River",
+      "type": "river",
+      "location": "Tours, France"
+    },
+    "IRONMAN Vietnam": {
+      "venue_name": "East Sea (South China Sea)",
+      "type": "ocean",
+      "location": "Da Nang, Vietnam"
+    },
+    "IRONMAN Vichy": {
+      "venue_name": "Allier River",
+      "type": "river",
+      "location": "Vichy, France"
+    },
+    "IRONMAN Vitoria-Gasteiz": {
+      "venue_name": "Lake Ullíbarri-Gamboa",
+      "type": "lake",
+      "location": "Vitoria-Gasteiz, Spain"
+    },
+    "IRONMAN Wales": {
+      "venue_name": "Carmarthen Bay",
+      "type": "ocean",
+      "location": "Tenby, Wales, UK"
+    },
+    "IRONMAN Western Australia": {
+      "venue_name": "Geographe Bay",
+      "type": "ocean",
+      "location": "Busselton, WA, Australia"
+    },
+    "IRONMAN Wisconsin": {
+      "venue_name": "Lake Monona",
+      "type": "lake",
+      "location": "Madison, Wisconsin, USA"
+    },
+    "IRONMAN World Championship - Women": {
+      "venue_name": "Kailua Bay",
+      "type": "ocean",
+      "location": "Kailua-Kona, Hawaii, USA"
+    }
+  }
+}

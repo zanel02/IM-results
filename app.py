@@ -1,3 +1,4 @@
+import base64
 import json
 import sqlite3
 from pathlib import Path
@@ -62,6 +63,12 @@ _IM_PALETTE = [
     "#e31837", "#3b82f6", "#10b981", "#f59e0b",
     "#8b5cf6", "#ec4899", "#06b6d4", "#f97316", "#84cc16", "#14b8a6",
 ]
+_DIST_DB = {"70.3": "IRONMAN 70.3", "Full": "IRONMAN"}
+_SEGMENTS = {"Swim": "swim_secs", "Bike": "bike_secs", "Run": "run_secs", "Finish": "finish_secs"}
+
+_LOGO_B64 = base64.b64encode(
+    (Path(__file__).parent / "assets" / "ironman_logo.png").read_bytes()
+).decode()
 
 def _im_theme() -> dict:
     return {
@@ -198,10 +205,49 @@ def load_trend_raw(age_groups: tuple, dist_filter: str) -> pd.DataFrame:
            WHERE res.age_group IN ({placeholders})
              AND res.status = 'FIN'
              AND r.results_fetched_at IS NOT NULL
-             AND r.distance_type LIKE ?
+             AND r.distance_type = ?
            ORDER BY eg.name, r.year, res.finish_secs""",
         get_conn(),
-        params=list(age_groups) + [f"%{dist_filter}%"],
+        params=list(age_groups) + [dist_filter],
+    )
+
+
+@st.cache_data
+def load_segment_percentiles(dist_filter: str) -> pd.DataFrame:
+    """Per-race swim/bike/run/finish times for all finishers matching distance type."""
+    return pd.read_sql(
+        """SELECT r.id AS race_id, r.year, r.event_name,
+                  eg.name AS series_name,
+                  res.athlete_name, res.country_iso2,
+                  res.swim_secs, res.bike_secs, res.run_secs, res.finish_secs,
+                  res.age_group, res.gender
+           FROM results res
+           JOIN races r ON res.race_id = r.id
+           JOIN event_groups eg ON r.group_id = eg.id
+           WHERE res.status = 'FIN'
+             AND r.results_fetched_at IS NOT NULL
+             AND r.distance_type = ?""",
+        get_conn(),
+        params=(dist_filter,),
+    )
+
+
+@st.cache_data
+def load_series_all_finishers(group_uuid: str) -> pd.DataFrame:
+    """All finisher splits for every year of a race series, for athlete YoY comparison."""
+    return pd.read_sql(
+        """SELECT r.year, res.athlete_name, res.country_iso2,
+                  res.age_group, res.gender,
+                  res.swim_secs, res.bike_secs, res.run_secs, res.finish_secs
+             FROM results res
+             JOIN races r ON res.race_id = r.id
+             JOIN event_groups eg ON r.group_id = eg.id
+            WHERE eg.group_uuid = ?
+              AND res.status = 'FIN'
+              AND r.results_fetched_at IS NOT NULL
+            ORDER BY r.year, res.athlete_name""",
+        get_conn(),
+        params=(group_uuid,),
     )
 
 
@@ -242,6 +288,58 @@ def load_map_races() -> pd.DataFrame:
     return df
 
 
+# ── Keenan-page loaders ──────────────────────────────────────────────────────
+
+_KEENAN_VALID = (
+    "(r.distance_type = 'IRONMAN'"
+    " AND res.swim_secs > 2000 AND res.t1_secs > 0 AND res.t2_secs > 0"
+    " AND res.finish_secs BETWEEN 25200 AND 61200)"
+    " OR (r.distance_type = 'IRONMAN 70.3'"
+    " AND res.swim_secs > 800"
+    " AND res.finish_secs BETWEEN 10800 AND 32400)"
+)
+
+
+@st.cache_data
+def load_keenan_participation() -> pd.DataFrame:
+    return pd.read_sql(
+        f"""SELECT r.year, r.distance_type, COUNT(*) AS finishers
+            FROM results res JOIN races r ON res.race_id = r.id
+            WHERE r.year BETWEEN 2016 AND 2025
+              AND r.distance_type IN ('IRONMAN', 'IRONMAN 70.3')
+              AND ({_KEENAN_VALID})
+            GROUP BY r.year, r.distance_type ORDER BY r.year""",
+        get_conn(),
+    )
+
+
+@st.cache_data
+def load_keenan_age_groups() -> pd.DataFrame:
+    return pd.read_sql(
+        f"""SELECT r.year, res.age_group, COUNT(*) AS finishers
+            FROM results res JOIN races r ON res.race_id = r.id
+            WHERE r.year BETWEEN 2016 AND 2025
+              AND r.distance_type IN ('IRONMAN', 'IRONMAN 70.3')
+              AND ({_KEENAN_VALID})
+              AND res.age_group IS NOT NULL AND res.age_group != ''
+            GROUP BY r.year, res.age_group ORDER BY r.year""",
+        get_conn(),
+    )
+
+
+@st.cache_data
+def load_keenan_race_counts() -> pd.DataFrame:
+    return pd.read_sql(
+        """SELECT year, distance_type, COUNT(DISTINCT id) AS races
+           FROM races
+           WHERE year BETWEEN 2016 AND 2025
+             AND distance_type IN ('IRONMAN', 'IRONMAN 70.3')
+             AND results_fetched_at IS NOT NULL
+           GROUP BY year, distance_type ORDER BY year""",
+        get_conn(),
+    )
+
+
 # ── helpers ───────────────────────────────────────────────────────────────────
 
 def fmt_time(secs) -> str:
@@ -251,6 +349,16 @@ def fmt_time(secs) -> str:
     h, rem = divmod(secs, 3600)
     m, s = divmod(rem, 60)
     return f"{h}:{m:02d}:{s:02d}" if h else f"{m}:{s:02d}"
+
+
+def fmt_time_sortable(secs) -> str:
+    """Always H:MM:SS — string sort == numeric sort across the table."""
+    if secs is None or (isinstance(secs, float) and np.isnan(secs)):
+        return "—"
+    secs = int(secs)
+    h, rem = divmod(secs, 3600)
+    m, s = divmod(rem, 60)
+    return f"{h}:{m:02d}:{s:02d}"
 
 
 # Unicode arrows showing direction wind is blowing toward (standard meteorological sense)
@@ -275,6 +383,38 @@ def time_histogram(series: pd.Series, bin_minutes: int) -> pd.DataFrame:
 
     labels = [f"{edge_label(edges[i])} – {edge_label(edges[i+1])}" for i in range(len(counts))]
     return pd.DataFrame({"Bucket": labels, "Athletes": counts.astype(int)})
+
+
+def pct_dot_chart(series: pd.Series, height: int = 180) -> alt.Chart | None:
+    """Horizontal dot chart showing P10/P25/P50/P75/P90 for a time series (seconds)."""
+    clean = series.dropna()
+    if clean.empty:
+        return None
+    pcts = [10, 25, 50, 75, 90]
+    rows = []
+    for p in pcts:
+        secs = float(np.percentile(clean, p))
+        rows.append({"Percentile": f"P{p}", "secs": secs, "label": fmt_time(int(secs))})
+    df = pd.DataFrame(rows)
+    tick = alt.Chart(df).mark_tick(thickness=2, size=20, color="#94a3b8").encode(
+        x=alt.X("secs:Q", title="seconds", axis=alt.Axis(labelExpr=(
+            "floor(datum.value/60) + ':' + (datum.value % 60 < 10 ? '0' : '') + (datum.value % 60)"
+        ))),
+        y=alt.Y("Percentile:N", sort=["P10", "P25", "P50", "P75", "P90"], title=None),
+    )
+    dots = alt.Chart(df).mark_circle(size=80).encode(
+        x=alt.X("secs:Q"),
+        y=alt.Y("Percentile:N", sort=["P10", "P25", "P50", "P75", "P90"]),
+        color=alt.Color("Percentile:N", legend=None, scale=alt.Scale(
+            domain=["P10", "P25", "P50", "P75", "P90"],
+            range=["#6ee7b7", "#34d399", "#e31837", "#f87171", "#fca5a5"],
+        )),
+        tooltip=[
+            alt.Tooltip("Percentile:N"),
+            alt.Tooltip("label:N", title="Time"),
+        ],
+    )
+    return (tick + dots).properties(height=height)
 
 
 def hist_chart(df: pd.DataFrame, height: int) -> alt.Chart:
@@ -379,31 +519,23 @@ series_df["clean_name"] = series_df["series_name"].str.replace(r"^\d{4}\s+", "",
 
 # ── tabs ──────────────────────────────────────────────────────────────────────
 
-st.markdown("""
-<div style="display:flex;align-items:center;gap:1.2rem;padding:1.2rem 1.6rem;
+st.markdown(f"""
+<div style="display:flex;align-items:center;gap:1.6rem;padding:1.1rem 1.6rem;
             background:linear-gradient(135deg,#0d0d0d 0%,#1e1e1e 100%);
             border-radius:14px;margin-bottom:0.5rem;border-left:5px solid #e31837;
             box-shadow:0 4px 20px rgba(0,0,0,0.15);">
-  <svg width="54" height="54" viewBox="0 0 54 54" xmlns="http://www.w3.org/2000/svg">
-    <circle cx="27" cy="27" r="27" fill="#e31837"/>
-    <text x="27" y="37" text-anchor="middle"
-          font-family="Georgia,'Times New Roman',serif"
-          font-size="28" font-weight="900" fill="white" letter-spacing="-1">M</text>
-    <circle cx="40" cy="13" r="5.5" fill="white"/>
-  </svg>
-  <div>
-    <div style="color:white;font-size:1.65rem;font-weight:800;letter-spacing:0.1em;
-                line-height:1.1;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;">
-      IRONMAN RESULTS
-    </div>
-    <div style="color:#e31837;font-size:0.72rem;font-weight:700;letter-spacing:0.22em;
-                text-transform:uppercase;margin-top:5px;">
-      ANYTHING IS POSSIBLE
-    </div>
+  <img src="data:image/png;base64,{_LOGO_B64}"
+       style="height:44px;width:auto;object-fit:contain;" />
+  <div style="color:#9ca3af;font-size:0.72rem;font-weight:700;letter-spacing:0.22em;
+              text-transform:uppercase;border-left:2px solid #e31837;padding-left:1rem;">
+    RESULTS DASHBOARD
   </div>
 </div>
 """, unsafe_allow_html=True)
-tab1, tab2, tab3, tab4, tab5 = st.tabs(["Race Results", "Year-over-Year Comparison", "Athlete Search", "Analytics", "Race Map"])
+tab1, tab2, tab3, tab4, tab5, tab6, tab7, tab8 = st.tabs([
+    "Race Results", "Year-over-Year Comparison", "Athlete Search",
+    "Analytics", "Race Comparison", "Athlete YoY", "Race Map", "For Keenan",
+])
 
 
 # ══════════════════════════════════════════════════════════════════════════════
@@ -605,6 +737,24 @@ with tab1:
             if not h.empty:
                 st.altair_chart(hist_chart(h, 240), width="content")
 
+        col_t1, col_t2, _ = st.columns(3)
+        with col_t1:
+            st.markdown("**T1**")
+            h = time_histogram(df["t1_secs"], bin_minutes=1)
+            if not h.empty:
+                st.altair_chart(hist_chart(h, 200), width="content")
+            pc = pct_dot_chart(df["t1_secs"])
+            if pc:
+                st.altair_chart(pc, use_container_width=True)
+        with col_t2:
+            st.markdown("**T2**")
+            h = time_histogram(df["t2_secs"], bin_minutes=1)
+            if not h.empty:
+                st.altair_chart(hist_chart(h, 200), width="content")
+            pc = pct_dot_chart(df["t2_secs"])
+            if pc:
+                st.altair_chart(pc, use_container_width=True)
+
 
 # ══════════════════════════════════════════════════════════════════════════════
 # TAB 2 — year-over-year comparison
@@ -644,7 +794,7 @@ with tab2:
                    JOIN event_groups eg ON r.group_id = eg.id
                    WHERE eg.group_uuid = ? AND res.status = 'FIN' AND res.age_group IS NOT NULL""",
                 get_conn(),
-                params=(sel_series["group_uuid"],),
+                params=(str(sel_series["group_uuid"]),),
             )["age_group"].tolist()
         )
         ag_compare = st.selectbox("Age Group", series_ag_options, key="t2_ag")
@@ -1013,7 +1163,7 @@ with tab4:
     with c5d:
         ana_both = st.checkbox(
             "Only races with editions in both endpoint years",
-            value=True,
+            value=False,
             key="ana_both",
         )
 
@@ -1021,7 +1171,7 @@ with tab4:
     _age_group_list = tuple(
         f"{g}{r}" for g in _GENDER_MAP[ana_gender] for r in _ranges
     )
-    raw_ana = load_trend_raw(_age_group_list, ana_dist).copy()
+    raw_ana = load_trend_raw(_age_group_list, _DIST_DB[ana_dist]).copy()
     raw_ana["clean_name"] = raw_ana["series_name"].str.replace(r"^\d{4}\s+", "", regex=True)
 
     # Show slider first so yr1/yr2 drive everything below
@@ -1127,9 +1277,22 @@ with tab4:
         else:
             plot_df = metrics_df[metrics_df["clean_name"].isin(selected_ana)]
 
+            # Collapse selected races into one aggregate line per year:
+            # participants = sum; times = mean of per-race values
+            agg_df = plot_df.groupby("year", as_index=False).agg(
+                participants=("participants", "sum"),
+                winner_secs=("winner_secs", "mean"),
+                top5_avg_secs=("top5_avg_secs", "mean"),
+                median_secs=("median_secs", "mean"),
+            )
+            for _c in ["winner", "top5_avg", "median"]:
+                agg_df[f"{_c}_mins"] = agg_df[f"{_c}_secs"] / 60
+                agg_df[f"{_c}_fmt"] = agg_df[f"{_c}_secs"].apply(
+                    lambda s: fmt_time(int(s)) if pd.notna(s) else "—"
+                )
+
             def _trend_chart(df, y_col, y_title, tt_col=None):
                 tt = [
-                    alt.Tooltip("clean_name:N", title="Race"),
                     alt.Tooltip("year:Q", title="Year", format="d"),
                     alt.Tooltip(f"{y_col}:Q", title=y_title, format=".1f"),
                 ]
@@ -1143,24 +1306,31 @@ with tab4:
                                 axis=alt.Axis(format="d", tickMinStep=1)),
                         y=alt.Y(f"{y_col}:Q", title=y_title,
                                 scale=alt.Scale(zero=False)),
-                        color=alt.Color("clean_name:N", title="Race"),
                         tooltip=tt,
                     )
                     .properties(height=270)
                     .interactive()
                 )
 
+            n = len(selected_ana)
+            race_lbl = f"{n} race" if n == 1 else f"{n} races"
+            if n > 1:
+                st.caption(
+                    f"Participants = total across {race_lbl} · "
+                    "winning / top-5 / median = average of per-race values"
+                )
+
             col5a, col5b = st.columns(2)
             with col5a:
                 st.markdown("##### Participants")
                 st.altair_chart(
-                    _trend_chart(plot_df, "participants", "Finishers"),
+                    _trend_chart(agg_df, "participants", "Finishers"),
                     width="stretch",
                 )
             with col5b:
                 st.markdown("##### Winning Time")
                 st.altair_chart(
-                    _trend_chart(plot_df, "winner_mins", "Minutes", tt_col="winner_fmt"),
+                    _trend_chart(agg_df, "winner_mins", "Minutes", tt_col="winner_fmt"),
                     width="stretch",
                 )
 
@@ -1168,13 +1338,13 @@ with tab4:
             with col5c:
                 st.markdown("##### Top-5 Average")
                 st.altair_chart(
-                    _trend_chart(plot_df, "top5_avg_mins", "Minutes", tt_col="top5_avg_fmt"),
+                    _trend_chart(agg_df, "top5_avg_mins", "Minutes", tt_col="top5_avg_fmt"),
                     width="stretch",
                 )
             with col5d:
                 st.markdown("##### Median Finish")
                 st.altair_chart(
-                    _trend_chart(plot_df, "median_mins", "Minutes", tt_col="median_fmt"),
+                    _trend_chart(agg_df, "median_mins", "Minutes", tt_col="median_fmt"),
                     width="stretch",
                 )
 
@@ -1235,6 +1405,508 @@ with tab4:
 # ══════════════════════════════════════════════════════════════════════════════
 
 with tab5:
+    st.subheader("Race Comparison")
+
+
+    _DEFAULT_PCTS = [10, 25, 50, 75, 90]
+    _SWIM_DIST_M = {"Full": 3862.0, "70.3": 1900.0}
+    _SWIM_DIST_Y = {"Full": 4224.0, "70.3": 2078.0}
+
+    _SWIM_VENUES: dict = json.loads(
+        (Path(__file__).parent / "data" / "swim_venues.json").read_text()
+    )["races"]
+    _SWIM_TYPE_LABEL = {"ocean": "Ocean/Sea", "lake": "Lake", "river": "River", "reservoir": "Reservoir"}
+
+    rc_c1, rc_c2, rc_c3 = st.columns([1, 2, 2])
+    with rc_c1:
+        rc_dist = st.selectbox("Distance", ["Full", "70.3"], key="rc_dist")
+    with rc_c2:
+        rc_segment = st.selectbox("Segment", list(_SEGMENTS.keys()), key="rc_segment")
+    with rc_c3:
+        rc_pcts = st.multiselect(
+            "Percentiles", [5, 10, 25, 50, 75, 90, 95],
+            default=_DEFAULT_PCTS,
+            key="rc_pcts",
+        )
+
+    rc_dist_db = _DIST_DB.get(rc_dist, "IRONMAN")
+    raw_rc = load_segment_percentiles(rc_dist_db)
+    if raw_rc.empty:
+        st.info("No data available for the selected distance.")
+    else:
+        raw_rc["clean_name"] = raw_rc["series_name"].str.replace(r"^\d{4}\s+", "", regex=True)
+
+        # Join swim venue metadata
+        raw_rc["swim_type"] = raw_rc["clean_name"].map(
+            lambda n: _SWIM_VENUES.get(n, {}).get("type", "unknown")
+        )
+        raw_rc["swim_venue"] = raw_rc["clean_name"].map(
+            lambda n: _SWIM_VENUES.get(n, {}).get("venue_name", "")
+        )
+
+        avail_rc_years = sorted(raw_rc["year"].dropna().unique().astype(int).tolist())
+        rc_c4, rc_c5, rc_c6 = st.columns([2, 2, 2])
+        with rc_c4:
+            if len(avail_rc_years) > 1:
+                rc_yr_range = st.slider(
+                    "Year range",
+                    min_value=avail_rc_years[0], max_value=avail_rc_years[-1],
+                    value=(avail_rc_years[0], avail_rc_years[-1]),
+                    key="rc_yr_range",
+                )
+                rc_yr1, rc_yr2 = rc_yr_range
+            else:
+                rc_yr1 = rc_yr2 = avail_rc_years[0] if avail_rc_years else 2025
+        with rc_c5:
+            rc_gender = st.radio("Gender", ["All", "Male", "Female"], horizontal=True, key="rc_gender")
+        with rc_c6:
+            avail_swim_types = sorted(raw_rc["swim_type"].unique().tolist())
+            swim_type_opts = ["All"] + [_SWIM_TYPE_LABEL.get(t, t.title()) for t in avail_swim_types if t != "unknown"]
+            rc_swim_filter = st.selectbox("Swim type", swim_type_opts, key="rc_swim_type")
+
+        filtered_rc = raw_rc[(raw_rc["year"] >= rc_yr1) & (raw_rc["year"] <= rc_yr2)].copy()
+        if rc_gender != "All":
+            filtered_rc = filtered_rc[filtered_rc["gender"] == rc_gender]
+        if rc_swim_filter != "All":
+            inv_label = {v: k for k, v in _SWIM_TYPE_LABEL.items()}
+            filtered_rc = filtered_rc[filtered_rc["swim_type"] == inv_label.get(rc_swim_filter, rc_swim_filter)]
+
+        seg_col = _SEGMENTS[rc_segment]
+        filtered_rc = filtered_rc.dropna(subset=[seg_col])
+        if filtered_rc.empty:
+            st.info("No segment data for the current filters.")
+        else:
+            rc_pool = st.checkbox(
+                "Pool years — combine all selected years into one row per race",
+                value=False,
+                key="rc_pool_years",
+            )
+
+            # Build label: per-edition when not pooling, per-series when pooling
+            if rc_pool:
+                filtered_rc["race_label"] = filtered_rc["clean_name"]
+            else:
+                filtered_rc["race_label"] = filtered_rc["clean_name"] + " (" + filtered_rc["year"].astype(str) + ")"
+
+            all_race_labels = sorted(filtered_rc["race_label"].unique().tolist())
+            rc_selected = st.multiselect(
+                f"Races ({len(all_race_labels)} available)",
+                all_race_labels,
+                default=all_race_labels,
+                key="rc_races",
+            )
+
+            if not rc_selected:
+                st.info("Select at least one race above.")
+            else:
+                plot_rc = filtered_rc[filtered_rc["race_label"].isin(rc_selected)].copy()
+
+                if not rc_pcts:
+                    st.info("Select at least one percentile.")
+                else:
+                    pct_rows = []
+                    for label, grp in plot_rc.groupby("race_label"):
+                        vals = grp[seg_col].dropna()
+                        if vals.empty:
+                            continue
+                        years_in_grp = sorted(grp["year"].dropna().unique().astype(int).tolist())
+                        if rc_pool and len(years_in_grp) > 1:
+                            year_label = f"{years_in_grp[0]}–{years_in_grp[-1]}"
+                        else:
+                            year_label = str(years_in_grp[0])
+                        venue = grp["swim_venue"].iloc[0]
+                        stype = _SWIM_TYPE_LABEL.get(grp["swim_type"].iloc[0], "")
+                        for p in sorted(rc_pcts):
+                            pct_rows.append({
+                                "race_label": label,
+                                "years": year_label,
+                                "Percentile": f"P{p}",
+                                "secs": float(np.percentile(vals, p)),
+                                "mins": float(np.percentile(vals, p)) / 60,
+                                "time_fmt": fmt_time(int(np.percentile(vals, p))),
+                                "n": len(vals),
+                                "swim_venue": venue,
+                                "swim_type": stype,
+                            })
+
+                    pct_df = pd.DataFrame(pct_rows)
+
+                    # Sort by median (or middle selected percentile), fastest on top
+                    mid_p = 50 if 50 in rc_pcts else rc_pcts[len(rc_pcts) // 2]
+                    median_order = (
+                        pct_df[pct_df["Percentile"] == f"P{mid_p}"]
+                        .sort_values("secs")["race_label"].tolist()
+                    )
+                    if not median_order:
+                        median_order = sorted(pct_df["race_label"].unique().tolist())
+
+                    # Gray span rule (min pct → max pct) to show spread per race
+                    span_df = (
+                        pct_df.groupby("race_label")
+                        .agg(min_mins=("mins", "min"), max_mins=("mins", "max"))
+                        .reset_index()
+                    )
+                    _time_axis = alt.Axis(
+                        labelExpr=(
+                            "floor(datum.value/60) + ':'"
+                            " + (datum.value % 60 < 10 ? '0' : '')"
+                            " + (datum.value % 60)"
+                        ),
+                        title=f"{rc_segment} Time",
+                    )
+                    _y_enc = alt.Y(
+                        "race_label:N",
+                        sort=median_order,
+                        title=None,
+                        axis=alt.Axis(labelLimit=320, labelFontSize=11),
+                    )
+
+                    rule_layer = (
+                        alt.Chart(span_df)
+                        .mark_rule(strokeWidth=2, color="#cbd5e1")
+                        .encode(
+                            y=_y_enc,
+                            x=alt.X("min_mins:Q", axis=_time_axis),
+                            x2="max_mins:Q",
+                        )
+                    )
+                    # Distinct, ordered colors: blue (fast) → red (slow)
+                    _PCT_COLORS = {
+                        "P5":  "#1d4ed8", "P10": "#3b82f6", "P25": "#10b981",
+                        "P50": "#f59e0b", "P75": "#f97316", "P90": "#ef4444", "P95": "#991b1b",
+                    }
+                    pct_domain = [f"P{p}" for p in sorted(rc_pcts)]
+                    pct_range  = [_PCT_COLORS.get(k, "#94a3b8") for k in pct_domain]
+
+                    dot_layer = (
+                        alt.Chart(pct_df)
+                        .mark_point(filled=True, size=90, opacity=0.92)
+                        .encode(
+                            y=_y_enc,
+                            x=alt.X("mins:Q", axis=_time_axis),
+                            color=alt.Color(
+                                "Percentile:N",
+                                title="Percentile",
+                                scale=alt.Scale(domain=pct_domain, range=pct_range),
+                                sort=pct_domain,
+                            ),
+                            tooltip=[
+                                alt.Tooltip("race_label:N", title="Race"),
+                                alt.Tooltip("years:N", title="Years"),
+                                alt.Tooltip("swim_venue:N", title="Swim Venue"),
+                                alt.Tooltip("swim_type:N", title="Swim Type"),
+                                alt.Tooltip("Percentile:N"),
+                                alt.Tooltip("time_fmt:N", title="Time"),
+                                alt.Tooltip("n:Q", title="Finishers"),
+                            ],
+                        )
+                    )
+                    chart_h = max(320, len(median_order) * 24)
+                    st.altair_chart(
+                        (rule_layer + dot_layer).properties(height=chart_h),
+                        width="stretch",
+                    )
+
+                    # Summary table: one row per race, one column per percentile
+                    pivot = pct_df.pivot(index="race_label", columns="Percentile", values="time_fmt")
+                    meta_map = pct_df.groupby("race_label")[["n", "swim_venue", "swim_type", "years"]].first()
+                    pivot.insert(0, "Years", meta_map["years"])
+                    pivot.insert(1, "Swim Type", meta_map["swim_type"])
+                    pivot.insert(2, "Swim Venue", meta_map["swim_venue"])
+                    pivot.insert(3, "Finishers", meta_map["n"])
+                    pivot.index.name = "Race"
+                    pivot.columns.name = None
+                    st.dataframe(pivot.loc[median_order], width="stretch")
+
+                    # ── Cross-reference: athletes who did ALL selected races in the same year ──
+                    st.divider()
+                    st.markdown("#### Athletes Who Completed All Selected Races")
+
+                    # One row per (athlete, year, race)
+                    xref = (
+                        plot_rc.dropna(subset=[seg_col])
+                        .groupby(["athlete_name", "country_iso2", "year", "race_label", "age_group"], as_index=False)
+                        [seg_col].min()
+                    )
+                    xref["time_fmt"] = xref[seg_col].apply(
+                        lambda s: fmt_time_sortable(int(s)) if pd.notna(s) else "—"
+                    )
+
+                    # Qualify: (athlete, year) rows where they completed every selected race label
+                    n_selected_races = plot_rc["race_label"].nunique()
+                    per_ay = (
+                        xref.groupby(["athlete_name", "country_iso2", "year"])["race_label"]
+                        .nunique()
+                        .reset_index(name="race_count")
+                    )
+                    qualifying_ay = per_ay[per_ay["race_count"] == n_selected_races][
+                        ["athlete_name", "country_iso2", "year"]
+                    ]
+
+                    if qualifying_ay.empty:
+                        st.info("No athletes completed all selected races in the same year.")
+                    else:
+                        xref_q = xref.merge(qualifying_ay, on=["athlete_name", "country_iso2", "year"])
+
+                        # ── Aggregate summary ─────────────────────────────────
+                        agg = (
+                            xref_q.groupby("race_label")[seg_col]
+                            .mean()
+                            .reset_index(name="avg_secs")
+                        )
+                        agg["Avg Time"] = agg["avg_secs"].apply(lambda s: fmt_time(int(s)))
+                        fastest = agg["avg_secs"].min()
+                        agg["Δ vs Fastest"] = agg["avg_secs"].apply(
+                            lambda s: ("+" + fmt_time(int(s - fastest))) if s > fastest else "—"
+                        )
+                        agg["% vs Fastest"] = agg["avg_secs"].apply(
+                            lambda s: (f"+{(s - fastest) / fastest * 100:.1f}%") if s > fastest else "—"
+                        )
+                        agg["Athletes"] = xref_q.groupby("race_label")["athlete_name"].nunique().values
+                        if rc_segment == "Swim":
+                            dm = _SWIM_DIST_M[rc_dist]
+                            dy = _SWIM_DIST_Y[rc_dist]
+                            agg["Pace/100y (100m)"] = agg["avg_secs"].apply(
+                                lambda s: f"{fmt_time(int(s / dy * 100))} ({fmt_time(int(s / dm * 100))})"
+                            )
+                        agg = agg.rename(columns={"race_label": "Race"}).drop(columns="avg_secs")
+                        agg["_order"] = agg["Race"].map(
+                            {r: i for i, r in enumerate(median_order)}
+                        ).fillna(999)
+                        agg = agg.sort_values("_order").drop(columns="_order").reset_index(drop=True)
+                        st.dataframe(agg, width="stretch", hide_index=True)
+
+                        # ── Per-athlete table ─────────────────────────────────
+                        xref_pivot = xref_q.pivot_table(
+                            index=["athlete_name", "country_iso2", "year"],
+                            columns="race_label",
+                            values="time_fmt",
+                            aggfunc="first",
+                        )
+                        xref_pivot.columns.name = None
+                        xref_pivot = xref_pivot.reset_index()
+                        xref_pivot.rename(columns={
+                            "athlete_name": "Athlete",
+                            "country_iso2": "Country",
+                            "year": "Year",
+                        }, inplace=True)
+                        xref_pivot["Year"] = xref_pivot["Year"].astype(int)
+
+                        ag_map = xref_q.groupby(["athlete_name", "year"])["age_group"].first()
+                        xref_pivot["AG"] = xref_pivot.apply(
+                            lambda r: ag_map.get((r["Athlete"], r["Year"]), ""), axis=1
+                        )
+
+                        if rc_segment == "Swim":
+                            dm = _SWIM_DIST_M[rc_dist]
+                            dy = _SWIM_DIST_Y[rc_dist]
+                            xref_q["pace_fmt"] = xref_q[seg_col].apply(
+                                lambda s: f"{fmt_time(int(s / dy * 100))} ({fmt_time(int(s / dm * 100))})"
+                            )
+                            ppace = xref_q.pivot_table(
+                                index=["athlete_name", "country_iso2", "year"],
+                                columns="race_label", values="pace_fmt", aggfunc="first",
+                            )
+                            ppace.columns.name = None
+                            ppace.columns = [f"{c} Pace" for c in ppace.columns]
+                            ppace = ppace.reset_index().rename(columns={
+                                "athlete_name": "Athlete", "country_iso2": "Country", "year": "Year",
+                            })
+                            xref_pivot = xref_pivot.merge(ppace, on=["Athlete", "Country", "Year"], how="left")
+
+                        rc_col_names = [c for c in xref_pivot.columns if c not in ("Athlete", "Country", "Year", "AG")]
+                        ordered_cols = [c for c in median_order if c in rc_col_names]
+                        remaining   = [c for c in rc_col_names if c not in ordered_cols]
+                        # Interleave: time, pace for each race in order
+                        interleaved = []
+                        for rc in ordered_cols:
+                            interleaved.append(rc)
+                            if f"{rc} Pace" in rc_col_names:
+                                interleaved.append(f"{rc} Pace")
+                        interleaved += [c for c in remaining if c not in interleaved]
+                        xref_pivot = xref_pivot[["Athlete", "Country", "Year", "AG"] + interleaved]
+                        xref_pivot = xref_pivot.sort_values(["Athlete", "Year"]).reset_index(drop=True)
+
+                        n_athletes = xref_pivot["Athlete"].nunique()
+                        n_ay = len(qualifying_ay)
+                        st.caption(f"{n_athletes:,} athletes · {n_ay} athlete-year combinations · {rc_segment} times")
+                        st.dataframe(xref_pivot, width="stretch", hide_index=True)
+
+
+with tab6:
+    st.subheader("Athlete Year-Over-Year")
+
+    c1, c2, c3, c4 = st.columns([1, 1, 1, 2])
+    with c1:
+        yoy_dist = st.selectbox("Distance", ["Full", "70.3"], key="yoy_dist")
+    with c4:
+        yoy_seg = st.selectbox("Segment", list(_SEGMENTS.keys()), key="yoy_seg")
+
+    yoy_all = load_segment_percentiles(_DIST_DB[yoy_dist]).copy()
+    yoy_all["clean_name"] = yoy_all["event_name"].str.replace(r"^\d{4}\s+", "", regex=True)
+    avail_yoy_years = sorted(yoy_all["year"].dropna().unique().astype(int))
+
+    if len(avail_yoy_years) < 2:
+        st.info("Need at least 2 years of data for this distance.")
+    else:
+        with c2:
+            year_a = int(st.selectbox("Year A", avail_yoy_years,
+                                      index=len(avail_yoy_years) - 2, key="yoy_ya"))
+        with c3:
+            year_b = int(st.selectbox("Year B", avail_yoy_years,
+                                      index=len(avail_yoy_years) - 1, key="yoy_yb"))
+
+        if year_a == year_b:
+            st.warning("Year A and Year B must be different.")
+        else:
+            yoy_seg_col = _SEGMENTS[yoy_seg]
+
+            # Best result per athlete per race per year — merge on race so only
+            # same-race cross-year pairs are compared (no Florida→Jacksonville matches)
+            raw_a = yoy_all[yoy_all["year"] == year_a].dropna(subset=[yoy_seg_col])
+            idx_a = raw_a.groupby(["athlete_name", "country_iso2", "clean_name"])[yoy_seg_col].idxmin()
+            df_a = (raw_a.loc[idx_a]
+                    [["athlete_name", "country_iso2", "gender", "age_group",
+                      yoy_seg_col, "clean_name"]]
+                    .rename(columns={yoy_seg_col: "secs_a", "age_group": f"ag_{year_a}"}))
+
+            raw_b = yoy_all[yoy_all["year"] == year_b].dropna(subset=[yoy_seg_col])
+            idx_b = raw_b.groupby(["athlete_name", "country_iso2", "clean_name"])[yoy_seg_col].idxmin()
+            df_b = (raw_b.loc[idx_b]
+                    [["athlete_name", "country_iso2", "age_group", yoy_seg_col, "clean_name"]]
+                    .rename(columns={yoy_seg_col: "secs_b", "age_group": f"ag_{year_b}"}))
+
+            merged = df_a.merge(df_b, on=["athlete_name", "country_iso2", "clean_name"])
+            merged["delta_secs"] = merged["secs_b"] - merged["secs_a"]
+
+            if merged.empty:
+                st.info("No athletes found in both selected years.")
+            else:
+                # ── age group filter ───────────────────────────────────
+                all_ags = sorted(merged[f"ag_{year_b}"].dropna().unique())
+                sel_ags = st.multiselect(
+                    "Age Groups", all_ags, placeholder="All age groups", key="yoy_ags"
+                )
+                if sel_ags:
+                    merged = merged[merged[f"ag_{year_b}"].isin(sel_ags)]
+
+                # ── direction / improvement filter ─────────────────────
+                fc1, fc2 = st.columns([2, 3])
+                with fc1:
+                    yoy_dir = st.radio("Show", ["All", "Improved", "Declined"],
+                                       horizontal=True, key="yoy_dir")
+                with fc2:
+                    if yoy_dir in ("Improved", "Declined"):
+                        min_delta_min = st.slider(
+                            "By at least (minutes)", 0, 120, 0, key="yoy_min_delta"
+                        )
+                    else:
+                        min_delta_min = 0
+
+                if yoy_dir == "Improved":
+                    filtered_yoy = merged[merged["delta_secs"] <= -min_delta_min * 60]
+                elif yoy_dir == "Declined":
+                    filtered_yoy = merged[merged["delta_secs"] >= min_delta_min * 60]
+                else:
+                    filtered_yoy = merged
+
+                if filtered_yoy.empty:
+                    st.info("No athletes match the current filters.")
+                else:
+                    # ── summary metrics ────────────────────────────────
+                    n_total = len(merged)
+                    n_imp = (merged["delta_secs"] < 0).sum()
+                    n_dec = (merged["delta_secs"] > 0).sum()
+                    avg_d = merged["delta_secs"].mean()
+                    sign = "+" if avg_d >= 0 else ""
+
+                    m1, m2, m3, m4 = st.columns(4)
+                    m1.metric("Athletes in both years", f"{n_total:,}")
+                    m2.metric("Improved", f"{n_imp:,} ({n_imp / n_total * 100:.0f}%)")
+                    m3.metric("Declined", f"{n_dec:,} ({n_dec / n_total * 100:.0f}%)")
+                    m4.metric("Avg Δ", f"{sign}{fmt_time(int(abs(avg_d)))}")
+
+                    # ── scatter chart ──────────────────────────────────
+                    pdata = filtered_yoy.copy()
+                    pdata["ya_mins"] = pdata["secs_a"] / 60
+                    pdata["yb_mins"] = pdata["secs_b"] / 60
+                    pdata["direction"] = pdata["delta_secs"].apply(
+                        lambda d: "Improved" if d < -60 else ("Declined" if d > 60 else "Similar")
+                    )
+                    pdata["ya_fmt"] = pdata["secs_a"].apply(fmt_time_sortable)
+                    pdata["yb_fmt"] = pdata["secs_b"].apply(fmt_time_sortable)
+                    pdata["delta_min"] = (pdata["delta_secs"] / 60).round(1)
+
+                    _mn = min(pdata["ya_mins"].min(), pdata["yb_mins"].min()) * 0.99
+                    _mx = max(pdata["ya_mins"].max(), pdata["yb_mins"].max()) * 1.01
+                    ref_df = pd.DataFrame({"x": [_mn, _mx], "y": [_mn, _mx]})
+
+                    _hm_axis = alt.Axis(
+                        labelExpr=(
+                            "floor(datum.value/60) + ':'"
+                            " + (datum.value % 60 < 10 ? '0' : '')"
+                            " + (datum.value % 60)"
+                        )
+                    )
+                    ref_line = alt.Chart(ref_df).mark_line(
+                        strokeDash=[5, 5], color="#94a3b8", strokeWidth=1.5
+                    ).encode(
+                        x=alt.X("x:Q", axis=_hm_axis, title=f"{year_a} {yoy_seg}"),
+                        y=alt.Y("y:Q", axis=_hm_axis, title=f"{year_b} {yoy_seg}"),
+                    )
+                    dots = alt.Chart(pdata).mark_circle(size=65, opacity=0.75).encode(
+                        x=alt.X("ya_mins:Q", axis=_hm_axis, title=f"{year_a} {yoy_seg}"),
+                        y=alt.Y("yb_mins:Q", axis=_hm_axis, title=f"{year_b} {yoy_seg}"),
+                        color=alt.Color("direction:N", sort=["Improved", "Similar", "Declined"],
+                                        scale=alt.Scale(
+                                            domain=["Improved", "Similar", "Declined"],
+                                            range=["#10b981", "#94a3b8", "#ef4444"],
+                                        )),
+                        tooltip=[
+                            alt.Tooltip("athlete_name:N", title="Athlete"),
+                            alt.Tooltip("country_iso2:N", title="Country"),
+                            alt.Tooltip("clean_name:N", title="Race"),
+                            alt.Tooltip(f"ag_{year_b}:N", title="AG"),
+                            alt.Tooltip("ya_fmt:N", title=str(year_a)),
+                            alt.Tooltip("yb_fmt:N", title=str(year_b)),
+                            alt.Tooltip("delta_min:Q", title="Δ (min)", format="+.1f"),
+                        ],
+                    )
+                    st.altair_chart(
+                        (ref_line + dots).properties(height=460),
+                        use_container_width=True,
+                    )
+
+                    # ── table ──────────────────────────────────────────
+                    tbl = filtered_yoy[
+                        ["athlete_name", "country_iso2", "gender",
+                         f"ag_{year_a}", f"ag_{year_b}",
+                         "clean_name", "secs_a", "secs_b", "delta_secs"]
+                    ].copy()
+                    tbl[str(year_a)] = tbl["secs_a"].apply(fmt_time_sortable)
+                    tbl[str(year_b)] = tbl["secs_b"].apply(fmt_time_sortable)
+                    tbl["Δ (min)"] = (tbl["delta_secs"] / 60).round(1)
+                    tbl["% Δ"] = (tbl["delta_secs"] / tbl["secs_a"] * 100).round(1)
+                    tbl = (tbl
+                           .drop(columns=["secs_a", "secs_b", "delta_secs"])
+                           .rename(columns={
+                               "athlete_name": "Athlete",
+                               "country_iso2": "Country",
+                               "gender": "Gender",
+                               f"ag_{year_a}": f"AG {year_a}",
+                               f"ag_{year_b}": f"AG {year_b}",
+                               "clean_name": "Race",
+                           })
+                           .sort_values("Δ (min)")
+                           .reset_index(drop=True))
+                    tbl = tbl[["Athlete", "Country", "Gender",
+                               f"AG {year_a}", f"AG {year_b}",
+                               "Race", str(year_a), str(year_b), "Δ (min)", "% Δ"]]
+                    st.caption(f"{len(tbl):,} athletes shown · sorted by Δ (most improved first)")
+                    st.dataframe(tbl, use_container_width=True, hide_index=True)
+
+
+with tab7:
     st.subheader("Race Map")
 
     map_df = load_map_races()
@@ -1337,3 +2009,230 @@ with tab5:
                     hist_map = time_histogram(finishers_map["finish_secs"], 20)
                     if not hist_map.empty:
                         st.altair_chart(hist_chart(hist_map, 300), width="content")
+
+
+# ══════════════════════════════════════════════════════════════════════════════
+# TAB 8 — For Keenan
+# ══════════════════════════════════════════════════════════════════════════════
+
+with tab8:
+    import re as _re
+
+    st.markdown("## For Keenan")
+
+
+    # ── load data ─────────────────────────────────────────────────────────────
+    # .copy() prevents mutating the @st.cache_data-returned object across reruns
+    part_raw = load_keenan_participation().copy()
+    ag_raw = load_keenan_age_groups().copy()
+    races_raw = load_keenan_race_counts().copy()
+
+    # add distance labels up-front so filtered slices always have the column
+    _dist_map = {"IRONMAN": "Full (140.6)", "IRONMAN 70.3": "70.3"}
+    part_raw["distance"] = part_raw["distance_type"].map(_dist_map)
+    races_raw["distance"] = races_raw["distance_type"].map(_dist_map)
+
+    # ── Toggle (applied before all derived data) ──────────────────────────────
+    excl_2020 = st.toggle("Exclude 2020", value=False, key="keenan_excl_2020",
+                          help="2020 was a COVID year — most races were cancelled")
+
+    part_plot = part_raw[part_raw["year"] != 2020].copy() if excl_2020 else part_raw
+    ag_plot = ag_raw[ag_raw["year"] != 2020].copy() if excl_2020 else ag_raw
+    races_plot = races_raw[races_raw["year"] != 2020].copy() if excl_2020 else races_raw
+
+    total_by_year = part_plot.groupby("year")["finishers"].sum().reset_index().rename(columns={"finishers": "total"})
+
+    # age bracket classifier — returns None for pros, para, unknown, or <18
+    def _bracket(ag: str) -> str | None:
+        m = _re.search(r"\d+", ag)
+        if not m:
+            return None
+        age = int(m.group())
+        if age < 18:
+            return None
+        if age < 30:
+            return "18–29"
+        if age < 45:
+            return "30–44"
+        if age < 60:
+            return "45–59"
+        return "60+"
+
+    ag_plot["bracket"] = ag_plot["age_group"].apply(_bracket)
+    bracket_df = (
+        ag_plot.dropna(subset=["bracket"])
+        .groupby(["year", "bracket"])["finishers"]
+        .sum()
+        .reset_index()
+    )
+
+    # young people % denominator = age-group finishers only (excludes pros, para, nulls)
+    ag_total_by_year = (
+        bracket_df.groupby("year")["finishers"].sum()
+        .reset_index().rename(columns={"finishers": "ag_total"})
+    )
+    young_df = bracket_df[bracket_df["bracket"] == "18–29"].merge(ag_total_by_year, on="year")
+    young_df["pct"] = young_df["finishers"] / young_df["ag_total"] * 100
+
+    # ── headline metrics ───────────────────────────────────────────────────────
+    yr25 = total_by_year[total_by_year["year"] == 2025]["total"].values
+    yr16 = total_by_year[total_by_year["year"] == 2016]["total"].values
+    total_25 = int(yr25[0]) if len(yr25) else 0
+    total_16 = int(yr16[0]) if len(yr16) else 0
+    growth_pct = (total_25 - total_16) / total_16 * 100 if total_16 else 0
+
+    young_25 = young_df[young_df["year"] == 2025]
+    young_16 = young_df[young_df["year"] == 2016]
+    young_pct_25 = float(young_25["pct"].values[0]) if not young_25.empty else 0
+    young_pct_16 = float(young_16["pct"].values[0]) if not young_16.empty else 0
+
+    km1, km2 = st.columns(2)
+    km1.metric("2025 Participants", f"{total_25:,}")
+    km2.metric("Growth 2016→2025", f"+{growth_pct:.0f}%", delta=f"+{total_25 - total_16:,} athletes")
+
+    st.divider()
+
+    # ── Sections 1 & 2: side by side ─────────────────────────────────────────
+    pc_col, rc_col = st.columns(2)
+
+    _dist_scale = alt.Scale(domain=["Full (140.6)", "70.3"], range=["#e31837", "#3b82f6"])
+    _dist_legend = alt.Legend(title="Distance")
+
+    with pc_col:
+        st.subheader("Total Participation")
+        part_chart = (
+            alt.Chart(part_plot)
+            .mark_bar()
+            .encode(
+                x=alt.X("year:O", axis=alt.Axis(labelAngle=0, title="Year")),
+                y=alt.Y("finishers:Q", stack="zero", axis=alt.Axis(title="Participants", format=",d")),
+                color=alt.Color("distance:N", scale=_dist_scale, legend=_dist_legend),
+                tooltip=[
+                    alt.Tooltip("year:O", title="Year"),
+                    alt.Tooltip("distance:N", title="Distance"),
+                    alt.Tooltip("finishers:Q", title="Participants", format=",d"),
+                ],
+            )
+            .properties(height=280)
+        )
+        st.altair_chart(part_chart.configure_view(strokeWidth=0), use_container_width=True)
+
+    with rc_col:
+        st.subheader("Number of Races")
+        races_chart = (
+            alt.Chart(races_plot)
+            .mark_bar()
+            .encode(
+                x=alt.X("year:O", axis=alt.Axis(labelAngle=0, title="Year")),
+                y=alt.Y("races:Q", stack="zero", axis=alt.Axis(title="Races")),
+                color=alt.Color("distance:N", scale=_dist_scale, legend=None),
+                tooltip=[
+                    alt.Tooltip("year:O", title="Year"),
+                    alt.Tooltip("distance:N", title="Distance"),
+                    alt.Tooltip("races:Q", title="Races"),
+                ],
+            )
+            .properties(height=280)
+        )
+        st.altair_chart(races_chart.configure_view(strokeWidth=0), use_container_width=True)
+
+    st.divider()
+
+    # ── Section 4: The Youth Wave ─────────────────────────────────────────────
+    st.subheader("The Youth Wave (Ages 18–29)")
+
+    yw_col1, yw_col2 = st.columns(2)
+
+    with yw_col1:
+        st.markdown("**Absolute count**")
+        young_bar = (
+            alt.Chart(young_df)
+            .mark_bar(color="#22c55e")
+            .encode(
+                x=alt.X("year:O", axis=alt.Axis(labelAngle=0, title="Year")),
+                y=alt.Y("finishers:Q", axis=alt.Axis(title="Participants", format=",d")),
+                tooltip=[
+                    alt.Tooltip("year:O", title="Year"),
+                    alt.Tooltip("finishers:Q", title="18–29 participants", format=",d"),
+                ],
+            )
+            .properties(height=250)
+        )
+        young_label = (
+            alt.Chart(young_df)
+            .mark_text(dy=-8, color="#22c55e", fontSize=11, fontWeight="bold")
+            .encode(
+                x=alt.X("year:O"),
+                y=alt.Y("finishers:Q"),
+                text=alt.Text("finishers:Q", format=",d"),
+            )
+        )
+        st.altair_chart(alt.layer(young_bar, young_label).configure_view(strokeWidth=0), use_container_width=True)
+
+    with yw_col2:
+        st.markdown("**Share of all participants**")
+        young_line = (
+            alt.Chart(young_df)
+            .mark_line(point=alt.OverlayMarkDef(size=80), color="#22c55e", strokeWidth=2.5)
+            .encode(
+                x=alt.X("year:O", axis=alt.Axis(labelAngle=0, title="Year")),
+                y=alt.Y("pct:Q", axis=alt.Axis(title="% of all participants", format=".1f")),
+                tooltip=[
+                    alt.Tooltip("year:O", title="Year"),
+                    alt.Tooltip("pct:Q", title="% of participants", format=".1f"),
+                ],
+            )
+            .properties(height=250)
+        )
+        st.altair_chart(young_line.configure_view(strokeWidth=0), use_container_width=True)
+
+    young_16_abs = young_df[young_df["year"] == 2016]["finishers"].values
+    young_25_abs = young_df[young_df["year"] == 2025]["finishers"].values
+    if len(young_16_abs) and len(young_25_abs):
+        young_growth = (young_25_abs[0] - young_16_abs[0]) / young_16_abs[0] * 100
+        st.info(
+            f"Athletes aged 18–29 grew **{young_growth:.0f}%** from 2016 to 2025 "
+            f"({int(young_16_abs[0]):,} → {int(young_25_abs[0]):,}), "
+            f"outpacing overall growth of {growth_pct:.0f}%."
+        )
+
+    st.divider()
+
+    # ── Revenue estimate ──────────────────────────────────────────────────────
+    st.subheader("Estimated Entry Fee Revenue")
+
+    _fee_full = 1000
+    _fee_703 = 500
+
+    rev_data = []
+    for _, row in part_plot.iterrows():
+        fee = _fee_full if row["distance_type"] == "IRONMAN" else _fee_703
+        rev_data.append({"year": int(row["year"]), "distance": row["distance"], "revenue": int(row["finishers"]) * fee})
+    rev_df = pd.DataFrame(rev_data)
+    rev_by_year = rev_df.groupby("year")["revenue"].sum().reset_index()
+
+    rev_chart = (
+        alt.Chart(rev_df)
+        .mark_bar()
+        .encode(
+            x=alt.X("year:O", axis=alt.Axis(labelAngle=0, title="Year")),
+            y=alt.Y("revenue:Q", stack="zero", axis=alt.Axis(title="Est. Entry Fee Revenue (USD)", format="$,.0f")),
+            color=alt.Color("distance:N", scale=alt.Scale(domain=["Full (140.6)", "70.3"], range=["#e31837", "#3b82f6"]), legend=alt.Legend(title="Distance")),
+            tooltip=[
+                alt.Tooltip("year:O", title="Year"),
+                alt.Tooltip("distance:N", title="Distance"),
+                alt.Tooltip("revenue:Q", title="Revenue", format="$,.0f"),
+            ],
+        )
+        .properties(height=300)
+    )
+    st.altair_chart(rev_chart.configure_view(strokeWidth=0), use_container_width=True)
+
+    rev_16 = int(rev_by_year[rev_by_year["year"] == 2016]["revenue"].values[0])
+    rev_25 = int(rev_by_year[rev_by_year["year"] == 2025]["revenue"].values[0])
+    st.caption(
+        f"Estimated at $1,000/entry for full IRONMAN and $500/entry for 70.3. "
+        f"2016: **${rev_16/1e6:.1f}M** → 2025: **${rev_25/1e6:.1f}M** "
+        f"(+{(rev_25 - rev_16) / rev_16 * 100:.0f}%). Entry fees are the primary revenue driver for the IRONMAN Group."
+    )
+
